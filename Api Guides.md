@@ -158,29 +158,6 @@ Sample data:
 }
 ```
 
-## Get belonging chiefs list (lấy danh sách chief dưới quyền):
-
-Url: `http://visitme.cloudapp.net:83/Home/GetChiefList`
-
-Param: `None`
-
-Result: `Json`
-
-Sample data:
-```
-[
-   {
-      "sale_no":"6104",
-      "chief_ename":null
-   },
-   {
-      "sale_no":"6138",
-      "chief_ename":null
-   },
-   ...
-]
-```
-
 ## Get Data (NOT VALID ANYMORE):
 
 Url: `http://visitme.cloudapp.net:83/Home/GetSaleData`
