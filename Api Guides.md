@@ -157,29 +157,6 @@ Sample data:
    ]
 }
 ```
-			
-## Get belonging sale-mans list (lấy danh sách sale-man và chief dưới quyền):
-
-Url: `http://visitme.cloudapp.net:83/Home/GetSalemanList`
-
-Param: `None`
-
-Result: `Json`
-
-Sample data:
-```
-[
-   {
-      "sale_no":"6104",
-      "chief_ename":"aa"
-   },
-   {
-      "sale_no":"6138",
-      "chief_ename":"ddd"
-   },
-   ...
-]
-```
 
 ## Get belonging chiefs list (lấy danh sách chief dưới quyền):
 
