@@ -17,12 +17,12 @@ Url: `http://visitme.cloudapp.net:83/Home/Login`
 
 Param: `Json`
 
-`{Email, Password}`
+`{Email, Password, Imei}`
 
 Test data:
 
 ```
-{ Email: "6066", Password: "Ngo Hong Huong" }
+{ Email: "6066", Password: "6066", Imei: "6066" }
 ```
 
 Result:
@@ -403,6 +403,7 @@ Sample data:
 ## Get sale man report data:
 
 Url: `http://visitme.cloudapp.net:83/Home/GetSaleManReport`
+
 Param: `Json`
 
 `{ sale_no, part_kind, tc_date1, tc_date2 }`
