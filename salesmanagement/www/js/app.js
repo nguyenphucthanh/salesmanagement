@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'ngStorage'])
+angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
   .run(function ($ionicPlatform, $localStorage, $state) {
     $ionicPlatform.ready(function () {
@@ -21,36 +21,34 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngStorage'])
           StatusBar.styleDefault();
         }
       }
-      catch(ex) {
+      catch (ex) {
         console.error(ex);
-      }
-
-      if(!$localStorage.userLogin) {
-        $state.go('login');
       }
     });
   })
 
-  .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, $httpProvider) {
     $stateProvider
 
-      .state('home', {
+      .state('default', {
         url: '/',
-        abstract: true,
         templateUrl: 'templates/home.html',
         controller: 'AppCtrl'
       })
 
-      .state('login', {
-        url: '/login',
-        templateUrl: 'templates/login.html',
-        controller: 'LoginController'
+      .state('slkh', {
+        url: '/slkh?cust_no&part_kind&tc_date1&tc_date2',
+        templateUrl: 'templates/slkh.html',
+        controller: 'SlkhController'
       });
+
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/');
 
     // Disable cache
     //$ionicConfigProvider.views.maxCache(0);
+
+    $httpProvider.defaults.withCredentials = true;
   })
 
   .constant('CONFIG', {

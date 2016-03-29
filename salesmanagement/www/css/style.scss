@@ -1,0 +1,23 @@
+.ng-invalid {
+  color: #ef473a!important;
+}
+
+.table {
+  border-collapse: collapse;
+  th, td {
+    padding: 15px;
+    border: solid 1px #cccccc;
+
+    &.light-border {
+      border-color: #ffffff;
+    }
+  }
+
+  th {
+    font-weight: bold;
+  }
+
+  .Freeze {
+    background-color: #cccccc;
+  }
+}

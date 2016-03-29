@@ -1,1 +1,16 @@
-/* Empty. Add your own CSS if you like */
+.ng-invalid {
+  color: #ef473a !important; }
+
+.table {
+  border-collapse: collapse; }
+  .table th, .table td {
+    padding: 15px;
+    border: solid 1px #cccccc; }
+    .table th.light-border, .table td.light-border {
+      border-color: #ffffff; }
+  .table th {
+    font-weight: bold; }
+  .table .Freeze {
+    background-color: #cccccc; }
+
+/*# sourceMappingURL=style.css.map */
