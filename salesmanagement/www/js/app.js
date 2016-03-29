@@ -55,7 +55,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ngStorage'])
 
   .constant('CONFIG', {
     server: {
-      'local': 'http://visitme.cloudapp.net:83/Home/',
-      'live': 'http://antvn.vn/'
+      'local': 'http://137.116.131.7:83/Home/',
+      'live': 'http://antvn.vn/Home/'
     }['local']
   });
