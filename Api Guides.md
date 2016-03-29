@@ -1,50 +1,65 @@
+## Sale man Roles
 
-// Sale man Roles
-enum sale_role:
-	unknown = 0,
-	dir = 1,
-	chief = 2,
-	lead = 3,
-	sale = 4,
+```
+enum    sale_role:
+        unknown = 0,
+        dir = 1,
+        chief = 2,
+        lead = 3,
+        sale = 4,
+```
 
 
 
-- Login:
-	Url: http://visitme.cloudapp.net:83/Home/Login
-	Param: Json
-		{Email, Password}
-		// Test data: {Email: "6066", Password: "Ngo Hong Huong"}
+## Login:
 
-	Result:
-		- HTTP 200 if success; .AspNet.ApplicationCookie is returned and used for authorize requests later.
-		- HTTP Code 401(?) Unauthorized if login failed
-		- http://visitme.cloudapp.net:83/Home/Login?Email=6066&Password=Ngo%20Hong%20Huong
+Url: `http://visitme.cloudapp.net:83/Home/Login`
+
+Param: `Json`
+
+`{Email, Password}`
+
+Test data:
+
+```
+{ Email: "6066", Password: "Ngo Hong Huong" }
+```
+
+Result:
+- HTTP 200 if success; .AspNet.ApplicationCookie is returned and used for authorize requests later.
+- HTTP Code 401(?) Unauthorized if login failed
+- `http://visitme.cloudapp.net:83/Home/Login?Email=6066&Password=Ngo%20Hong%20Huong`
 
 		
-- Get label flags:
-	Url: http://visitme.cloudapp.net:83/Home/GetLabelFlags
-	Param: None
+## Get label flags:
 
-	Result: Json
-		- Sample data:
-			{
-			   "Result":{
-				  "0":"Type 0",
-				  "1":"Nupak",
-				  "2":"Nutrition",
-				  "3":"Dachan",
-				  "4":"Type 4",
-				  "5":"Redstar",
-				  "6":"Type 6",
-				  "8":"Type 8",
-				  "9":"Type 9"
-			   },
-			   "ResultCode":"Success",
-			   "ResultMessages":[
+Url: `http://visitme.cloudapp.net:83/Home/GetLabelFlags`
 
-			   ]
-			}		
-		
+Param: `None`
+
+Result: `Json`
+
+Sample data:
+
+```
+{
+   "Result":{
+      "0":"Type 0",
+      "1":"Nupak",
+      "2":"Nutrition",
+      "3":"Dachan",
+      "4":"Type 4",
+      "5":"Redstar",
+      "6":"Type 6",
+      "8":"Type 8",
+      "9":"Type 9"
+   },
+   "ResultCode":"Success",
+   "ResultMessages":[
+
+   ]
+}
+```
 		
 - Get p_1 list:
 	Url: http://visitme.cloudapp.net:83/Home/GetP1List
