@@ -13,12 +13,7 @@ angular.module('starter')
         "Password": password,
         "Imei": imei
       }).then(function (res) {
-        if(res.ResultCode === 'Success') {
-          deferred.resolve(res.Result);
-        }
-        else {
-          deferred.reject(res.ResultMessages);
-        }
+        deferred.resolve(res);
       }, function (error) {
         deferred.reject(error);
       });

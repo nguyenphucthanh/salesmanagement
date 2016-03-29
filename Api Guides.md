@@ -30,6 +30,21 @@ Result:
 - HTTP Code 401(?) Unauthorized if login failed
 - `http://visitme.cloudapp.net:83/Home/Login?Email=6066&Password=Ngo%20Hong%20Huong`
 
+```
+{
+    "sale_no":"6066",
+    "sale_ename":"Ngo Hong Huong",
+    "mobile":"0946587767",
+    "dir_no":"0002",
+    "chief_no":"6004",
+    "chief_ename":null,
+    "lead_no":null,
+    "username":null,
+    "password":"6066",
+    "role":4
+}
+```
+
 		
 ## Get label flags:
 
