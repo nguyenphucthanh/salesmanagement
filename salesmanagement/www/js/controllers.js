@@ -174,7 +174,10 @@ angular
       /**
        * go to report page
        */
-      $scope.submitReport = function () {
+      $scope.submitReport = function (form) {
+        if(form.$invalid) {
+          return false;
+        }
         if ($scope.report.type.value === 'slkh') {
           $state.go('slkh', {
             cust_no: $scope.report.customer.cust_no,

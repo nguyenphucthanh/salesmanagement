@@ -77,7 +77,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
     $urlRouterProvider.otherwise('/');
 
     // Disable cache
-    $ionicConfigProvider.views.maxCache(0);
+    //$ionicConfigProvider.views.maxCache(0);
 
     $httpProvider.defaults.withCredentials = true;
   })
