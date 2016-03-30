@@ -70,13 +70,19 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
         url: '/sltt?sale_no&part_kind&tc_date1&tc_date2',
         templateUrl: 'templates/sltt.html',
         controller: 'ReportController'
+      })
+
+      .state('sltv', {
+        url: '/sltv?chief_no&cust_type&label_flag&tc_date',
+        templateUrl: 'templates/sltv.html',
+        controller: 'ReportController'
       });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/');
 
     // Disable cache
-    $ionicConfigProvider.views.maxCache(0);
+    //$ionicConfigProvider.views.maxCache(0);
 
     $httpProvider.defaults.withCredentials = true;
   })

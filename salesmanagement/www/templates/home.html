@@ -40,8 +40,8 @@
           <span class="input-label">
             Loại
           </span>
-          <select name="partKind" id="partKind" ng-model="report.partKind" ng-options="kind as kind.name for kind in partKinds track by kind.value" required>
-            <option value="">--Chọn loại--</option>
+          <select name="partKind" id="partKind" ng-model="report.partKind" ng-options="kind as kind.name for kind in partKinds track by kind.value">
+            <option value="">--Hỗn hợp & Đậm đặc--</option>
           </select>
         </label>
 
@@ -49,14 +49,47 @@
           <span class="input-label">
             Từ ngày
           </span>
-          <input type="date" name="from" ng-model="report.from" required>
+          <input type="date" name="from" ng-model="report.from" required max="{{report.to | date:'yyyy-MM-dd'}}" ng-max="report.to">
         </label>
 
         <label class="item item-input" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
             Đến ngày
           </span>
-          <input type="date" name="to" ng-model="report.to" required>
+          <input type="date" name="to" ng-model="report.to" required min="{{report.from | date:'yyyy-MM-dd'}}" ng-min="report.from">
+        </label>
+
+        <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv', 'slgd'])">
+          <span class="input-label">Vùng</span>
+          <select name="area" id="area" ng-model="report.area" ng-options="area as area.name for area in areas track by area.value">
+            <option value="">--Tất cả--</option>
+          </select>
+        </label>
+
+        <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv'])">
+          <span class="input-label">Trưởng vùng</span>
+          <select name="chief" id="chief" ng-model="report.chief" ng-options="chief as chief.sale_ename for chief in chiefs track by chief.sale_no" required>
+            <option value="">--Chọn trưởng vùng--</option>
+          </select>
+        </label>
+
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['sltv'])">
+          <span class="input-label">Nhãn</span>
+          <select name="flag" id="flag" ng-model="report.flag" ng-options="flag as flag.name for flag in flags track by flag.value">
+            <option value="">--Tất cả--</option>
+          </select>
+        </label>
+
+        <label class="item item-input" ng-if="isFieldAvailable(['sltv'])">
+          <span class="input-label">Năm</span>
+          <input type="date" name="inYear" id="inYear" required ng-model="report.inYear">
+        </label>
+
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
+          <span class="input-label">Chu kỳ</span>
+          <select name="period" id="period" ng-model="report.period" ng-options="per as per.name for per in periods track by per.value">
+            <option value="">--Không--</option>
+          </select>
         </label>
 
         <div class="item">

@@ -43,14 +43,14 @@ angular
           to: new Date(),
           customer: '',
           partKind: '',
-          saleman: ''
+          saleman: '',
+          flag: '',
+          inYear: new Date(),
+          area: '',
+          period: 0
         };
 
         $scope.partKinds = [
-          {
-            name: 'Hỗn hợp và đậm đặc',
-            value: null
-          },
           {
             name: 'Hỗn hợp',
             value: 'A'
@@ -91,6 +91,22 @@ angular
             $scope.reportTypes.push(type);
           }
         });
+
+        $scope.areas = [];
+        for (var i = 1; i <= 17; i++) {
+          $scope.areas.push({
+            name: i,
+            value: i
+          });
+        }
+
+        $scope.periods = [
+          { name : 'Daily', value : 1 },
+          { name : 'Weekly', value : 2 },
+          { name : 'Monthly', value : 3 },
+          { name : 'Quarterly', value : 4 },
+          { name : 'Annually', value : 5 }
+        ];
       };
 
       /**
@@ -118,6 +134,34 @@ angular
         });
       };
 
+      $scope.getLabelFlags = function () {
+        $ionicLoading.show();
+        ReportService.getLabelFlags().then(function (data) {
+          $scope.flags = [];
+          angular.forEach(data.Result, function (value, key) {
+            $scope.flags.push({
+              name: value,
+              value: key
+            });
+          });
+        }, function () {
+          PopupService.alert('Lỗi', 'Không thể lấy danh sách cờ!');
+        }).finally(function () {
+          $ionicLoading.hide();
+        });
+      };
+
+      $scope.getChiefList = function() {
+        $ionicLoading.show();
+        ReportService.getChief().then(function (data) {
+          $scope.chiefs = data.Result;
+        }, function () {
+          PopupService.alert('Lỗi', 'Không thể lấy danh sách trưởng vùng!');
+        }).finally(function () {
+          $ionicLoading.hide();
+        });
+      };
+
       $scope.loadDataForReport = function () {
         if ($scope.report.type) {
           switch ($scope.report.type.value) {
@@ -128,6 +172,13 @@ angular
             case 'sltt':
               if ($scope.checkRole([1, 2])) {
                 $scope.getListSaleman();
+              }
+              break;
+
+            case 'sltv':
+              $scope.getLabelFlags();
+              if ($scope.checkRole([1])) {
+                $scope.getChiefList();
               }
               break;
 
@@ -143,6 +194,9 @@ angular
        * @returns {boolean}
        */
       $scope.checkRole = function (roles) {
+        if (!$scope.profile) {
+          return false;
+        }
         return roles.indexOf($scope.profile.role) >= 0;
       };
 
@@ -164,7 +218,7 @@ angular
             $scope.profile = $localStorage.profile;
             $scope.modal.hide();
 
-            if (!username) {
+            if (!username && $scope.loginData.autoLogin) {
               $localStorage.loginData = $scope.loginData;
             }
 
@@ -214,12 +268,19 @@ angular
             break;
           case 'sltt':
             $state.go('sltt', {
-              sale_no: [3,4].indexOf($scope.profile.role) >= 0 ? $scope.profile.sale_no : $scope.report.saleman.sale_no,
+              sale_no: [3, 4].indexOf($scope.profile.role) >= 0 ? $scope.profile.sale_no : $scope.report.saleman.sale_no,
               part_kind: $scope.report.partKind.value,
               tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
               tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')
             });
             break;
+          case 'sltv':
+            $state.go('sltv', {
+              chief_no: $scope.checkRole([1]) ? $scope.report.chief.sale_no : $scope.profile.sale_no,
+              cust_type: $scope.checkRole([1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
+              label_flag: $scope.report.flag.value,
+              tc_date: $filter('date')($scope.report.inYear, 'yyyy-MM-dd')
+            });
         }
       };
 

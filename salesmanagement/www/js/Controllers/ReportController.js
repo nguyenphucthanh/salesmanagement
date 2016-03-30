@@ -18,6 +18,9 @@ angular.module('starter')
         case '/sltt':
               functionName = 'getSaleManReport';
               break;
+        case '/sltv':
+              functionName = 'getChiefReport';
+              break;
       }
 
       ReportService[functionName]($stateParams).then(function (data) {

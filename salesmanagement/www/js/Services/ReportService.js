@@ -47,9 +47,26 @@ angular.module('starter')
     };
 
     /**
+     * get Chief List
+     * @returns {*}
+     */
+    report.getChief = function () {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'GetChiefList')
+        .then(function (res) {
+          deferred.resolve(res.data);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
+    /**
      * get list sale man
      * @returns {*}
-       */
+     */
     report.getSaleman = function () {
       var deferred = $q.defer();
 
@@ -86,13 +103,95 @@ angular.module('starter')
      * get Sale Man Report
      * @param data
      * @returns {*}
-       */
+     */
     report.getSaleManReport = function (data) {
       var deferred = $q.defer();
 
       $http.post(CONFIG.server + 'GetSaleManReport', data)
         .then(function (res) {
           deferred.resolve(res.data);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
+    /**
+     * get Chief Report
+     * @param data
+     * @returns {*}
+     */
+    report.getChiefReport = function (data) {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'GetChiefReport', data)
+        .then(function (res) {
+          deferred.resolve(res.data);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
+    /**
+     * get label flags
+     * @param data
+     * @returns {*}
+     */
+    report.getLabelFlags = function (data) {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'GetLabelFlags', data)
+        .then(function (res) {
+          deferred.resolve(res.data);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
+    report.getP1 = function () {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'GetP1List', data)
+        .then(function (res) {
+          var p1s = [];
+          angular.forEach(res.Result, function(value, key) {
+            p1s.push({
+              p1: key,
+              p1_name: value
+            });
+          });
+          deferred.resolve(p1s);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
+    report.getP2 = function (p1) {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'GetP2List', { p1 : p1 })
+        .then(function (res) {
+          deferred.resolve(res.Result);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
+    report.getProduct = function (p2) {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'GetProductList', { p2 : p2 })
+        .then(function (res) {
+          deferred.resolve(res.Result);
         }, function (error) {
           deferred.reject(error);
         });
