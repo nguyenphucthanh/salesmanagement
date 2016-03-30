@@ -31,20 +31,13 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
        * - else remove profile in local storage
        */
       if ($localStorage.loginData && $localStorage.loginData.autoLogin) {
-        if ($localStorage.loginData && $localStorage.loginData.autoLogin) {
-          $ionicLoading.show();
-          ReportService.login($localStorage.loginData.username, $localStorage.loginData.password, $localStorage.loginData.username)
-            .then(function () {
-            })
-            .finally(function () {
-              $ionicLoading.hide();
-            });
-        }
-        else {
-          if($localStorage.profile) {
-            delete $localStorage.profile;
-          }
-        }
+        $ionicLoading.show();
+        ReportService.login($localStorage.loginData.username, $localStorage.loginData.password, $localStorage.loginData.username)
+          .then(function () {
+          })
+          .finally(function () {
+            $ionicLoading.hide();
+          });
       }
 
       document.addEventListener('resume', function () {
@@ -70,14 +63,20 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
       .state('slkh', {
         url: '/slkh?cust_no&part_kind&tc_date1&tc_date2',
         templateUrl: 'templates/slkh.html',
-        controller: 'SlkhController'
+        controller: 'ReportController'
+      })
+
+      .state('sltt', {
+        url: '/sltt?sale_no&part_kind&tc_date1&tc_date2',
+        templateUrl: 'templates/sltt.html',
+        controller: 'ReportController'
       });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/');
 
     // Disable cache
-    //$ionicConfigProvider.views.maxCache(0);
+    $ionicConfigProvider.views.maxCache(0);
 
     $httpProvider.defaults.withCredentials = true;
   })

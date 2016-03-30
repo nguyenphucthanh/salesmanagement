@@ -16,7 +16,7 @@ angular.module('starter')
 
             header.width($(element).width());
 
-            realTableHeader.find('th, td').each(function () {
+            $(element).find('th, td').each(function () {
               $(this).css({
                 width: $(this).outerWidth(),
                 height: $(this).outerHeight()

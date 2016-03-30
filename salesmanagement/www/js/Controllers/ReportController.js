@@ -1,19 +1,30 @@
 angular.module('starter')
-  .controller('SlkhController', [
+  .controller('ReportController', [
     '$scope',
     '$stateParams',
     'ReportService',
     '$ionicLoading',
     'PopupService',
     '$ionicScrollDelegate',
-    function ($scope, $stateParams, ReportService, $ionicLoading, PopupService, $ionicScrollDelegate) {
+    '$location',
+    function ($scope, $stateParams, ReportService, $ionicLoading, PopupService, $ionicScrollDelegate, $location) {
       $ionicLoading.show();
 
-      ReportService.getReportCustomer($stateParams).then(function (data) {
+      var functionName = '';
+      switch ($location.path()) {
+        case '/slkh':
+              functionName = 'getReportCustomer';
+              break;
+        case '/sltt':
+              functionName = 'getSaleManReport';
+              break;
+      }
+
+      ReportService[functionName]($stateParams).then(function (data) {
         $scope.data = data.Result;
         $scope.$broadcast('grid');
       }, function () {
-        PopupService.alert('Lỗi', 'Không thể lấy Sản lượng Khách hàng');
+        PopupService.alert('Lỗi', 'Không thể lấy dữ liệu báo cáo');
       }).finally(function () {
         $ionicLoading.hide();
       });

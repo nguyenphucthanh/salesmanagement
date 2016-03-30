@@ -10,8 +10,8 @@ angular.module('starter')
      * @param email
      * @param password
      * @param imei
-       * @returns {*}
-       */
+     * @returns {*}
+     */
     report.login = function (email, password, imei) {
       var deferred = $q.defer();
 
@@ -32,14 +32,14 @@ angular.module('starter')
     /**
      * Get Customer List
      * @returns {*}
-       */
-    report.getCustomer = function() {
+     */
+    report.getCustomer = function () {
       var deferred = $q.defer();
 
       $http.post(CONFIG.server + 'GetCustomerList')
-        .then(function(res) {
+        .then(function (res) {
           deferred.resolve(res.data);
-        }, function(error) {
+        }, function (error) {
           deferred.reject(error);
         });
 
@@ -47,18 +47,36 @@ angular.module('starter')
     };
 
 
-      /**
-       * get Customer Report
-       * @param data
-       * @returns {*}
-       */
-    report.getReportCustomer = function(data) {
+    /**
+     * get Customer Report
+     * @param data
+     * @returns {*}
+     */
+    report.getReportCustomer = function (data) {
       var deferred = $q.defer();
 
       $http.post(CONFIG.server + 'GetCustomerReport', data)
-        .then(function(res) {
+        .then(function (res) {
           deferred.resolve(res.data);
-        }, function(error) {
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
+    /**
+     * get Sale Man Report
+     * @param data
+     * @returns {*}
+       */
+    report.getSaleManReport = function (data) {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'GetSaleManReport', data)
+        .then(function (res) {
+          deferred.resolve(res.data);
+        }, function (error) {
           deferred.reject(error);
         });
 

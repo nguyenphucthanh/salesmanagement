@@ -1,5 +1,5 @@
 <ion-view>
-  <ion-nav-title>Sản lượng khách hàng</ion-nav-title>
+  <ion-nav-title>Sản lượng tiếp thị</ion-nav-title>
   <ion-content scroll="false">
     <ion-scroll delegate-handle="main" direction="xy" zooming="false" has-bouncing="false" class="table-view" on-scroll="scrollView()">
       <div class="table-fixed-header" style="top: {{ scroll.top }}px;">
@@ -12,15 +12,15 @@
         <table class="table" id="table-column">
         </table>
       </div>
-      <table grid-view-scroll header="'#table-header'" column="'#table-column'" freeze-column-size="1" class="table">
+      <table grid-view-scroll header="'#table-header'" column="'#table-column'" freeze-column-size="4" class="table">
         <thead>
           <tr class="balanced-bg">
-            <th scope="col" class="light" ng-class="{ 'frozen' : $index < 1 }" ng-repeat="idx in data.index">{{ idx }}</th>
+            <th scope="col" class="light" ng-class="{ 'frozen' : $index < 4 }" ng-repeat="idx in data.index">{{ idx }}</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="(key, value) in data.data" class="" ng-class="{ 'table-footer' : $last }">
-            <td class="" ng-class="{ 'frozen' : $index < 1 }" ng-repeat="c in value track by $index">{{ c }}</td>
+            <td class="" ng-class="{ 'frozen' : $index < 4 }" ng-repeat="c in value track by $index">{{ c }}</td>
           </tr>
         </tbody>
       </table>

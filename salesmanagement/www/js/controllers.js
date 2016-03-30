@@ -31,6 +31,10 @@ angular
           animation: 'slide-in-up'
         }).then(function (modal) {
           $scope.modal = modal;
+
+          if (!$localStorage.profile) {
+            $scope.modal.show();
+          }
         });
 
         $scope.report = {
@@ -94,7 +98,7 @@ angular
       };
 
       $scope.loadDataForReport = function () {
-        if($scope.report.type) {
+        if ($scope.report.type) {
           $ionicLoading.show();
           switch ($scope.report.type.value) {
             case 'slkh':
@@ -121,7 +125,7 @@ angular
        * Login to service
        */
       $scope.doLogin = function (form, username, password, imei) {
-        if(form.$invalid) {
+        if (form.$invalid) {
           return false;
         }
 
@@ -134,11 +138,12 @@ angular
           .then(function (data) {
             $scope.profile = $localStorage.profile;
             $scope.modal.hide();
-            $scope.init();
 
             if (!username) {
               $localStorage.loginData = $scope.loginData;
             }
+
+            $scope.init();
           }, function (error) {
             PositionOptions.alert('Lỗi', 'Không thể đăng nhập!');
           })
@@ -155,12 +160,7 @@ angular
       };
 
       $timeout(function () {
-        if (!$localStorage.profile) {
-          $scope.modal.show();
-        }
-        else {
-          $scope.init();
-        }
+        $scope.init();
       }, 500);
 
       /**
@@ -175,16 +175,35 @@ angular
        * go to report page
        */
       $scope.submitReport = function (form) {
-        if(form.$invalid) {
+        if (form.$invalid) {
           return false;
         }
-        if ($scope.report.type.value === 'slkh') {
-          $state.go('slkh', {
-            cust_no: $scope.report.customer.cust_no,
-            part_kind: $scope.report.partKind.value,
-            tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
-            tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')
-          });
+        switch ($scope.report.type.value) {
+          case 'slkh':
+            $state.go('slkh', {
+              cust_no: $scope.report.customer.cust_no,
+              part_kind: $scope.report.partKind.value,
+              tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
+              tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')
+            });
+            break;
+          case 'sltt':
+            $state.go('sltt', {
+              sale_no: $localStorage.profile.sale_no,
+              part_kind: $scope.report.partKind.value,
+              tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
+              tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')
+            });
+            break;
+        }
+      };
+
+      $scope.isFieldAvailable = function (type) {
+        if ($scope.report && $scope.report.type) {
+          return $scope.report.type.value === type || type.indexOf($scope.report.type.value) >= 0;
+        }
+        else {
+          return false;
         }
       }
     }]);

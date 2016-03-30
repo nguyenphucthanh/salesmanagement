@@ -18,7 +18,7 @@
           </select>
         </label>
 
-        <label class="item item-input item-select" ng-if="report.type.value == 'slkh'">
+        <label class="item item-input item-select" ng-if="isFieldAvailable('slkh')">
           <span class="input-label">
             Khách hàng
           </span>
@@ -27,7 +27,7 @@
           </select>
         </label>
 
-        <label class="item item-input item-select" ng-if="report.type.value === 'slkh'">
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
             Loại
           </span>
@@ -36,14 +36,14 @@
           </select>
         </label>
 
-        <label class="item item-input">
+        <label class="item item-input" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
             Từ ngày
           </span>
           <input type="date" name="from" ng-model="report.from" required>
         </label>
 
-        <label class="item item-input">
+        <label class="item item-input" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
             Đến ngày
           </span>
