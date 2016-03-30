@@ -40,6 +40,12 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
           });
       }
 
+      if(!$localStorage.loginData) {
+        if($localStorage.profile) {
+          delete $localStorage.profile;
+        }
+      }
+
       document.addEventListener('resume', function () {
         if ($state.is('default')) {
           $state.reload();
@@ -76,6 +82,18 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
         url: '/sltv?chief_no&cust_type&label_flag&tc_date',
         templateUrl: 'templates/sltv.html',
         controller: 'ReportController'
+      })
+
+      .state('slgd', {
+        url: '/slgd?cust_type&label_flag&p_1&p_2&product_no&tc_date&PeriodType',
+        templateUrl: 'templates/sltv.html',
+        controller: 'ReportController'
+      })
+
+      .state('changePassword', {
+        url: '/changePassword',
+        templateUrl: 'templates/change-password.html',
+        controller: 'ChangePasswordController'
       });
 
     // if none of the above states are matched, use this as the fallback

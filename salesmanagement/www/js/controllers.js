@@ -47,7 +47,11 @@ angular
           flag: '',
           inYear: new Date(),
           area: '',
-          period: 0
+          period: '',
+          p1: '',
+          p2: '',
+          product: '',
+          directorDate: new Date()
         };
 
         $scope.partKinds = [
@@ -162,6 +166,44 @@ angular
         });
       };
 
+      $scope.getP1 = function() {
+        $ionicLoading.show();
+        ReportService.getP1().then(function (data) {
+          $scope.p1 = data;
+        }, function () {
+          PopupService.alert('Lỗi', 'Không thể lấy danh sách P1!');
+        }).finally(function () {
+          $ionicLoading.hide();
+        });
+      };
+
+      $scope.getP2 = function() {
+        $scope.products = [];
+        $scope.p2 = [];
+        $ionicLoading.show();
+        ReportService.getP2($scope.report.p1 ? $scope.report.p1.p1 : null).then(function (data) {
+          $scope.p2 = data;
+
+          $scope.getProduct();
+        }, function () {
+          PopupService.alert('Lỗi', 'Không thể lấy danh sách P2!');
+        }).finally(function () {
+          $ionicLoading.hide();
+        });
+      };
+
+      $scope.getProduct = function() {
+        $scope.products = [];
+        $ionicLoading.show();
+        ReportService.getProduct($scope.report.p2 ? $scope.report.p2.p2 : null).then(function (data) {
+          $scope.products = data;
+        }, function () {
+          PopupService.alert('Lỗi', 'Không thể lấy danh sách Sản phẩm!');
+        }).finally(function () {
+          $ionicLoading.hide();
+        });
+      };
+
       $scope.loadDataForReport = function () {
         if ($scope.report.type) {
           switch ($scope.report.type.value) {
@@ -180,6 +222,10 @@ angular
               if ($scope.checkRole([1])) {
                 $scope.getChiefList();
               }
+              break;
+
+            case 'slgd':
+              $scope.getP1();
               break;
 
             default:
@@ -247,6 +293,7 @@ angular
        */
       $scope.logOut = function () {
         delete $localStorage.profile;
+        delete $localStorage.loginData;
         $scope.modal.show();
       };
 
@@ -280,6 +327,16 @@ angular
               cust_type: $scope.checkRole([1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
               label_flag: $scope.report.flag.value,
               tc_date: $filter('date')($scope.report.inYear, 'yyyy-MM-dd')
+            });
+          case 'slgd':
+            $state.go('slgd', {
+              cust_type: $scope.checkRole([1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
+              label_flag: $scope.report.flag.value,
+              p_1: $scope.report.p1 ? $scope.report.p1.p1 : '',
+              p_2: $scope.report.p2 ? $scope.report.p2.p2 : '',
+              product_no: $scope.report.product ? $scope.report.product.product_no : '',
+              PeriodType: $scope.report.period.value,
+              tc_date: $filter('date')($scope.report.directorDate, 'yyyy-MM-dd')
             });
         }
       };

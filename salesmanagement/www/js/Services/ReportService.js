@@ -135,6 +135,19 @@ angular.module('starter')
       return deferred.promise;
     };
 
+    report.getDirectorReport = function (data) {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'GetDirectorReport', data)
+        .then(function (res) {
+          deferred.resolve(res.data);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
     /**
      * get label flags
      * @param data
@@ -156,10 +169,10 @@ angular.module('starter')
     report.getP1 = function () {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetP1List', data)
+      $http.post(CONFIG.server + 'GetP1List')
         .then(function (res) {
           var p1s = [];
-          angular.forEach(res.Result, function(value, key) {
+          angular.forEach(res.data.Result, function(value, key) {
             p1s.push({
               p1: key,
               p1_name: value
@@ -178,7 +191,7 @@ angular.module('starter')
 
       $http.post(CONFIG.server + 'GetP2List', { p1 : p1 })
         .then(function (res) {
-          deferred.resolve(res.Result);
+          deferred.resolve(res.data.Result);
         }, function (error) {
           deferred.reject(error);
         });
@@ -191,7 +204,20 @@ angular.module('starter')
 
       $http.post(CONFIG.server + 'GetProductList', { p2 : p2 })
         .then(function (res) {
-          deferred.resolve(res.Result);
+          deferred.resolve(res.data.Result);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
+    report.changePassword = function(password, newPassword) {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'ChangePassword', { OldPassword : password, NewPassword: newPassword })
+        .then(function (res) {
+          deferred.resolve(res.data);
         }, function (error) {
           deferred.reject(error);
         });

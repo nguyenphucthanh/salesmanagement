@@ -1,5 +1,5 @@
 angular.module('starter')
-  .directive('gridViewScroll', ['$timeout', function ($timeout) {
+  .directive('gridViewScroll', ['$timeout', '$ionicScrollDelegate', function ($timeout, $ionicScrollDelegate) {
     return {
       restrict: 'A',
       scope: {
@@ -36,6 +36,10 @@ angular.module('starter')
             header.next('.table-fixed-header-inner').html(header.html()).find('tr').each(function() {
               $(this).children(':gt(' + ($scope.freezeColumnSize - 1) + ')').remove();
             });
+
+            $timeout(function() {
+              $ionicScrollDelegate.resize();
+            }, 1000);
           });
         });
       }

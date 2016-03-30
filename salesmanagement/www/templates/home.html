@@ -3,14 +3,14 @@
     {{ profile.sale_ename }}
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button icon ion-ios-gear-outline"></button>
+    <button class="button icon ion-ios-gear-outline" ui-sref="changePassword"></button>
     <button class="button icon ion-log-out" ng-click="logOut()"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
     <form name="formReport" ng-submit="submitReport(formReport)">
       <div class="list">
-        <label class="item item-input item-select">
-          <span class="input-label">
+        <label class="item item-input item-select balanced-bg">
+          <span class="input-label light">
             Báo cáo
           </span>
           <select name="type" ng-model="report.type" ng-options="type as type.name for type in reportTypes track by type.value" ng-change="loadDataForReport()" required>
@@ -87,9 +87,35 @@
 
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
           <span class="input-label">Chu kỳ</span>
-          <select name="period" id="period" ng-model="report.period" ng-options="per as per.name for per in periods track by per.value">
-            <option value="">--Không--</option>
+          <select name="period" id="period" ng-model="report.period" ng-options="per as per.name for per in periods track by per.value" required>
+            <option value="">--Chọn chu kỳ--</option>
           </select>
+        </label>
+
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
+          <span class="input-label">P1</span>
+          <select name="p1" id="p1" ng-model="report.p1" ng-options="p as p.p1_name for p in p1 track by p.p1" ng-change="getP2()">
+            <option value="">--Tất cả--</option>
+          </select>
+        </label>
+
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
+          <span class="input-label">P2</span>
+          <select name="p2" id="p2" ng-model="report.p2" ng-options="p as p.p2_name for p in p2 track by p.p2" ng-change="getProduct()">
+            <option value="">--Tất cả--</option>
+          </select>
+        </label>
+
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
+          <span class="input-label">Sản phẩm</span>
+          <select name="product" id="product" ng-model="report.product" ng-options="p as p.product_vname for p in products track by p.product_no">
+            <option value="">--Tất cả--</option>
+          </select>
+        </label>
+
+        <label class="item item-input" ng-if="isFieldAvailable(['slgd'])">
+          <span class="input-label">Ngày</span>
+          <input type="date" name="directorDate" id="directorDate" ng-model="report.directorDate" required>
         </label>
 
         <div class="item">
