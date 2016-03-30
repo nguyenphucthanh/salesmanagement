@@ -27,6 +27,15 @@
           </select>
         </label>
 
+        <label class="item item-input item-select" ng-if="isFieldAvailable('sltt') && checkRole([1,2])">
+          <span class="input-label">
+            Nhân viên
+          </span>
+          <select name="salemans" ng-model="report.saleman" ng-options="saleman as saleman.sale_ename for saleman in salemans track by saleman.sale_no" required>
+            <option value="">--Chọn nhân viên--</option>
+          </select>
+        </label>
+
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
             Loại

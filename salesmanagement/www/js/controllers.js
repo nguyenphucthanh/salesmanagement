@@ -42,7 +42,8 @@ angular
           from: new Date(),
           to: new Date(),
           customer: '',
-          partKind: ''
+          partKind: '',
+          saleman: ''
         };
 
         $scope.partKinds = [
@@ -85,8 +86,8 @@ angular
 
         $scope.reportTypes = [];
 
-        angular.forEach($scope._reportTypes, function(type) {
-          if(type.roles.indexOf($localStorage.profile.role) >= 0) {
+        angular.forEach($scope._reportTypes, function (type) {
+          if (type.roles.indexOf($scope.profile.role) >= 0) {
             $scope.reportTypes.push(type);
           }
         });
@@ -95,7 +96,8 @@ angular
       /**
        * Load Data for Report
        */
-      $scope.reportSanLuongKhachHang = function () {
+      $scope.getListCustomer = function () {
+        $ionicLoading.show();
         ReportService.getCustomer().then(function (data) {
           $scope.customers = data.Result;
         }, function () {
@@ -105,16 +107,31 @@ angular
         });
       };
 
+      $scope.getListSaleman = function () {
+        $ionicLoading.show();
+        ReportService.getSaleman().then(function (data) {
+          $scope.salemans = data.Result;
+        }, function () {
+          PopupService.alert('Lỗi', 'Không thể lấy danh sách nhân viên!');
+        }).finally(function () {
+          $ionicLoading.hide();
+        });
+      };
+
       $scope.loadDataForReport = function () {
         if ($scope.report.type) {
-          $ionicLoading.show();
           switch ($scope.report.type.value) {
             case 'slkh':
-              $scope.reportSanLuongKhachHang();
+              $scope.getListCustomer();
+              break;
+
+            case 'sltt':
+              if ($scope.checkRole([1, 2])) {
+                $scope.getListSaleman();
+              }
               break;
 
             default:
-              $ionicLoading.hide();
               break;
           }
         }
@@ -197,7 +214,7 @@ angular
             break;
           case 'sltt':
             $state.go('sltt', {
-              sale_no: $localStorage.profile.sale_no,
+              sale_no: [3,4].indexOf($scope.profile.role) >= 0 ? $scope.profile.sale_no : $scope.report.saleman.sale_no,
               part_kind: $scope.report.partKind.value,
               tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
               tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')

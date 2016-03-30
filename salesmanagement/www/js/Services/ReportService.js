@@ -46,6 +46,23 @@ angular.module('starter')
       return deferred.promise;
     };
 
+    /**
+     * get list sale man
+     * @returns {*}
+       */
+    report.getSaleman = function () {
+      var deferred = $q.defer();
+
+      $http.post(CONFIG.server + 'GetSalemanList')
+        .then(function (res) {
+          deferred.resolve(res.data);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
 
     /**
      * get Customer Report
