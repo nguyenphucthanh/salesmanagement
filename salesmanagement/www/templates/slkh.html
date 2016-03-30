@@ -1,13 +1,29 @@
 <ion-view>
   <ion-nav-title>Sản lượng khách hàng</ion-nav-title>
   <ion-content scroll="false">
-    <table id="table-slkh" grid-view-scroll column-to-freeze="1" class="table">
-      <tr class="balanced-bg GridviewScrollHeader">
-        <th scope="col" class="light" ng-repeat="idx in data.index">{{ idx }}</th>
-      </tr>
-      <tr ng-repeat="(key, value) in data.data" class="GridviewScrollItem">
-        <td class="" ng-repeat="c in value track by $index">{{ c }}</td>
-      </tr>
-    </table>
+    <ion-scroll delegate-handle="main" direction="xy" zooming="false" has-bouncing="false" class="table-view" on-scroll="scrollView()">
+      <div class="table-fixed-header" style="top: {{ scroll.top }}px;">
+        <table class="table" id="table-header">
+        </table>
+        <table class="table table-fixed-header-inner" style="left: {{ scroll.left }}px;">
+        </table>
+      </div>
+      <div class="table-fixed-column" style="left: {{ scroll.left }}px;">
+        <table class="table" id="table-column">
+        </table>
+      </div>
+      <table grid-view-scroll header="'#table-header'" column="'#table-column'" freeze-column-size="1" class="table">
+        <thead>
+          <tr class="balanced-bg">
+            <th scope="col" class="light" ng-repeat="idx in data.index">{{ idx }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="(key, value) in data.data" class="">
+            <td class="" ng-repeat="c in value track by $index">{{ c }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-scroll>
   </ion-content>
 </ion-view>

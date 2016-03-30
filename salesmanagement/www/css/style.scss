@@ -5,19 +5,43 @@
 .table {
   border-collapse: collapse;
   th, td {
-    padding: 15px;
+    padding: 10px;
     border: solid 1px #cccccc;
-
-    &.light-border {
-      border-color: #ffffff;
-    }
+    white-space: nowrap;
   }
 
   th {
     font-weight: bold;
   }
 
-  .Freeze {
-    background-color: #cccccc;
+  &-view {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  &-fixed-header {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 11;
+    background-color: #ffffff;
+  }
+
+  &-fixed-header-inner {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 12;
+    background-color: #ffffff;
+  }
+
+  &-fixed-column {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    background-color: #ffffff;
   }
 }

@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
-  .run(function ($ionicPlatform, $localStorage, $state) {
+  .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading) {
     $ionicPlatform.ready(function () {
       try {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -24,6 +24,37 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
       catch (ex) {
         console.error(ex);
       }
+
+      /**
+       * on open app
+       * - if auto login is set then login in background and reload default state (home page)
+       * - else remove profile in local storage
+       */
+      if ($localStorage.loginData && $localStorage.loginData.autoLogin) {
+        if ($localStorage.loginData && $localStorage.loginData.autoLogin) {
+          $ionicLoading.show();
+          ReportService.login($localStorage.loginData.username, $localStorage.loginData.password, $localStorage.loginData.username)
+            .then(function () {
+            })
+            .finally(function () {
+              $ionicLoading.hide();
+            });
+        }
+        else {
+          if($localStorage.profile) {
+            delete $localStorage.profile;
+          }
+        }
+      }
+
+      document.addEventListener('resume', function () {
+        if ($state.is('default')) {
+          $state.reload();
+        }
+        else {
+          $state.go('default');
+        }
+      });
     });
   })
 
@@ -46,7 +77,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
     $urlRouterProvider.otherwise('/');
 
     // Disable cache
-    //$ionicConfigProvider.views.maxCache(0);
+    $ionicConfigProvider.views.maxCache(0);
 
     $httpProvider.defaults.withCredentials = true;
   })

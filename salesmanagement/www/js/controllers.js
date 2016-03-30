@@ -6,49 +6,56 @@ angular
     '$localStorage',
     '$ionicPopup',
     'ReportService',
-    '$localStorage',
     '$timeout',
     '$ionicLoading',
     '$cookies',
     'PopupService',
     '$filter',
     '$state',
-    function ($scope, $ionicModal, $localStorage, $ionicPopup, ReportService, $localStorage, $timeout, $ionicLoading, $cookies, PopupService, $filter, $state) {
-      $scope.profile = $localStorage.profile ? $localStorage.profile : {};
-
-      $scope.loginData = {
-        username: '',
-        password: '',
-        autoLogin: false
-      };
-
-      $scope.report = {
-        type: '',
-        from: new Date(),
-        to: new Date(),
-        customer: '',
-        partKind: ''
-      };
-
-      $scope.partKinds = [
-        {
-          name: 'Hỗn hợp và đậm đặc',
-          value: null
-        },
-        {
-          name: 'Hỗn hợp',
-          value: 'A'
-        },
-        {
-          name: 'Đậm đặc',
-          value: 'B'
-        }
-      ];
-
+    function ($scope, $ionicModal, $localStorage, $ionicPopup, ReportService, $timeout, $ionicLoading, $cookies, PopupService, $filter, $state) {
       /**
        * init views
        */
       $scope.init = function () {
+        $scope.profile = $localStorage.profile ? $localStorage.profile : {};
+        $scope.$state = $state;
+
+        $scope.loginData = {
+          username: '',
+          password: '',
+          autoLogin: false
+        };
+
+        $ionicModal.fromTemplateUrl('templates/login.html', {
+          scope: $scope,
+          animation: 'slide-in-up'
+        }).then(function (modal) {
+          $scope.modal = modal;
+        });
+
+        $scope.report = {
+          type: '',
+          from: new Date(),
+          to: new Date(),
+          customer: '',
+          partKind: ''
+        };
+
+        $scope.partKinds = [
+          {
+            name: 'Hỗn hợp và đậm đặc',
+            value: null
+          },
+          {
+            name: 'Hỗn hợp',
+            value: 'A'
+          },
+          {
+            name: 'Đậm đặc',
+            value: 'B'
+          }
+        ];
+
         $scope.reportTypes = [
           {
             name: 'Sản lượng KH',
@@ -70,22 +77,34 @@ angular
             value: 'slgd',
             roles: [1]
           }
-        ]
+        ];
       };
 
-        /**
-         * Load Data for Report
-         */
-      $scope.loadDataForReport = function() {
-        $ionicLoading.show();
-        if($scope.report.type.value === 'slkh') {
-          ReportService.getCustomer().then(function(data) {
-            $scope.customers = data.Result;
-          }, function() {
-            PopupService.alert('Lỗi', 'Không thể lấy danh sách khách hàng!');
-          }).finally(function() {
-            $ionicLoading.hide();
-          });
+      /**
+       * Load Data for Report
+       */
+      $scope.reportSanLuongKhachHang = function () {
+        ReportService.getCustomer().then(function (data) {
+          $scope.customers = data.Result;
+        }, function () {
+          PopupService.alert('Lỗi', 'Không thể lấy danh sách khách hàng!');
+        }).finally(function () {
+          $ionicLoading.hide();
+        });
+      };
+
+      $scope.loadDataForReport = function () {
+        if($scope.report.type) {
+          $ionicLoading.show();
+          switch ($scope.report.type.value) {
+            case 'slkh':
+              $scope.reportSanLuongKhachHang();
+              break;
+
+            default:
+              $ionicLoading.hide();
+              break;
+          }
         }
       };
 
@@ -93,7 +112,7 @@ angular
        * Check if report for current role is available
        * @param roles
        * @returns {boolean}
-         */
+       */
       $scope.checkRole = function (roles) {
         return roles.indexOf($scope.profile.role) >= 0;
       };
@@ -101,7 +120,11 @@ angular
       /**
        * Login to service
        */
-      $scope.doLogin = function (username, password, imei) {
+      $scope.doLogin = function (form, username, password, imei) {
+        if(form.$invalid) {
+          return false;
+        }
+
         $ionicLoading.show();
         var _username = username ? username : $scope.loginData.username;
         var _password = password ? password : $scope.loginData.password;
@@ -109,11 +132,13 @@ angular
 
         ReportService.login(_username, _password, _imei)
           .then(function (data) {
-            $localStorage.profile = data.data;
             $scope.profile = $localStorage.profile;
             $scope.modal.hide();
             $scope.init();
-            $localStorage.autoLogin = $scope.loginData.autoLogin;
+
+            if (!username) {
+              $localStorage.loginData = $scope.loginData;
+            }
           }, function (error) {
             PositionOptions.alert('Lỗi', 'Không thể đăng nhập!');
           })
@@ -129,13 +154,6 @@ angular
         PopupService.alert('Device ID', '<span>' + (device && device.uuid ? device.uuid : 'browser') + '</span>');
       };
 
-      $ionicModal.fromTemplateUrl('templates/login.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function (modal) {
-        $scope.modal = modal;
-      });
-
       $timeout(function () {
         if (!$localStorage.profile) {
           $scope.modal.show();
@@ -145,14 +163,19 @@ angular
         }
       }, 500);
 
-      $scope.logOut = function() {
+      /**
+       * log out of system
+       */
+      $scope.logOut = function () {
         delete $localStorage.profile;
-        $scope.profile = null;
         $scope.modal.show();
       };
 
-      $scope.submitReport = function() {
-        if($scope.report.type.value === 'slkh') {
+      /**
+       * go to report page
+       */
+      $scope.submitReport = function () {
+        if ($scope.report.type.value === 'slkh') {
           $state.go('slkh', {
             cust_no: $scope.report.customer.cust_no,
             part_kind: $scope.report.partKind.value,

@@ -2,7 +2,7 @@
  * Created by thanhnguyen on 3/29/16.
  */
 angular.module('starter')
-  .service('ReportService', ['CONFIG', '$q', '$http', function (CONFIG, $q, $http) {
+  .service('ReportService', ['CONFIG', '$q', '$http', '$localStorage', function (CONFIG, $q, $http, $localStorage) {
     var report = {};
 
     /**
@@ -20,6 +20,7 @@ angular.module('starter')
         "Password": password,
         "Imei": imei
       }).then(function (res) {
+        $localStorage.profile = res.data;
         deferred.resolve(res);
       }, function (error) {
         deferred.reject(error);

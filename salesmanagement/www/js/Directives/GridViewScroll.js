@@ -3,19 +3,39 @@ angular.module('starter')
     return {
       restrict: 'A',
       scope: {
-        columnToFreeze: '='
+        header: '=',
+        column: '=',
+        freezeColumnSize: '='
       },
-      link: function (scope, element, attributes) {
-        $timeout(function () {
-          $(element).gridviewScroll({
-            width: $(window).width(),
-            freezesize: scope.columnToFreeze ? scope.columnToFreeze : 1,
-            arrowsize: 30,
-            varrowtopimg: "lib/GridViewScroll/Images/arrowvt.png",
-            varrowbottomimg: "lib/GridViewScroll/Images/arrowvb.png",
-            harrowleftimg: "lib/GridViewScroll/Images/arrowhl.png",
-            harrowrightimg: "lib/GridViewScroll/Images/arrowhr.png",
-            headerrowcount: 1
+      link: function ($scope, element, attributes) {
+        $scope.$on('grid', function () {
+          $timeout(function () {
+            var header = $($scope.header);
+            var column = $($scope.column);
+            var realTableHeader = $(element).find('thead');
+
+            header.width($(element).width());
+
+            realTableHeader.find('th, td').each(function () {
+              $(this).css({
+                width: $(this).outerWidth(),
+                height: $(this).outerHeight()
+              });
+            });
+
+            realTableHeader.clone().appendTo(header);
+
+              /**
+               * Clone to frozen column
+               */
+            column.html($(element).html());
+            column.find('tr').each(function() {
+              $(this).children(':gt(' + ($scope.freezeColumnSize - 1) + ')').remove();
+            });
+
+            header.next('.table-fixed-header-inner').html(header.html()).find('tr').each(function() {
+              $(this).children(':gt(' + ($scope.freezeColumnSize - 1) + ')').remove();
+            });
           });
         });
       }
