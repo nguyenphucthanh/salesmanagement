@@ -60,7 +60,7 @@ angular
           }
         ];
 
-        $scope.reportTypes = [
+        $scope._reportTypes = [
           {
             name: 'Sản lượng KH',
             value: 'slkh',
@@ -82,6 +82,14 @@ angular
             roles: [1]
           }
         ];
+
+        $scope.reportTypes = [];
+
+        angular.forEach($scope._reportTypes, function(type) {
+          if(type.roles.indexOf($localStorage.profile.role) >= 0) {
+            $scope.reportTypes.push(type);
+          }
+        });
       };
 
       /**
