@@ -30,7 +30,8 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
        * - if auto login is set then login in background and reload default state (home page)
        * - else remove profile in local storage
        */
-      if ($localStorage.loginData && $localStorage.loginData.autoLogin) {
+
+      var backgroundLogin = function() {
         $ionicLoading.show();
         ReportService.login($localStorage.loginData.username, $localStorage.loginData.password, $localStorage.loginData.username)
           .then(function () {
@@ -38,6 +39,10 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
           .finally(function () {
             $ionicLoading.hide();
           });
+      };
+
+      if ($localStorage.loginData && $localStorage.loginData.autoLogin) {
+        backgroundLogin();
       }
 
       if(!$localStorage.loginData) {
@@ -47,12 +52,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
       }
 
       document.addEventListener('resume', function () {
-        if ($state.is('default')) {
-          $state.reload();
-        }
-        else {
-          $state.go('default');
-        }
+        backgroundLogin();
       });
     });
   })
