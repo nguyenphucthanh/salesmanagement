@@ -6,7 +6,9 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
-  .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading) {
+  .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading, $http) {
+    $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
     $ionicPlatform.ready(function () {
       try {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -41,11 +43,11 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
           });
       };
 
-      if ($localStorage.loginData && $localStorage.loginData.autoLogin) {
+      if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
         backgroundLogin();
       }
 
-      if(!$localStorage.loginData) {
+      if(!$localStorage.loginData || jQuery.isEmptyObject($localStorage.loginData)) {
         if($localStorage.profile) {
           delete $localStorage.profile;
         }
@@ -107,7 +109,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
   .constant('CONFIG', {
     server: {
-      'local': 'http://137.116.131.7:83/Home/',
+      'local': 'http://visitme.cloudapp.net:83/Home/',
       'live': 'http://antvn.vn/Home/'
     }['local']
   });
