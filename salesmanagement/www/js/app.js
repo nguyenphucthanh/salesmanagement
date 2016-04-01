@@ -54,7 +54,9 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
       }
 
       document.addEventListener('resume', function () {
-        backgroundLogin();
+        if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
+          backgroundLogin();
+        }
       });
     });
   })
