@@ -38,6 +38,9 @@ angular.module('starter')
 
       $http.post(CONFIG.server + 'GetCustomerList')
         .then(function (res) {
+          angular.forEach(res.data.Result, function(cust) {
+            cust.cust_vname = cust.cust_no + ' - ' + cust.cust_vname;
+          });
           deferred.resolve(res.data);
         }, function (error) {
           deferred.reject(error);
@@ -55,6 +58,9 @@ angular.module('starter')
 
       $http.post(CONFIG.server + 'GetChiefList')
         .then(function (res) {
+          angular.forEach(res.data.Result, function(chief) {
+            chief.sale_ename = chief.sale_no + ' - ' + chief.sale_ename;
+          });
           deferred.resolve(res.data);
         }, function (error) {
           deferred.reject(error);
@@ -72,6 +78,9 @@ angular.module('starter')
 
       $http.post(CONFIG.server + 'GetSalemanList')
         .then(function (res) {
+          angular.forEach(res.data.Result, function(saleman) {
+            saleman.sale_ename = saleman.sale_no + ' - ' + saleman.sale_ename;
+          });
           deferred.resolve(res.data);
         }, function (error) {
           deferred.reject(error);
@@ -172,10 +181,10 @@ angular.module('starter')
       $http.post(CONFIG.server + 'GetP1List')
         .then(function (res) {
           var p1s = [];
-          angular.forEach(res.data.Result, function(value, key) {
+          angular.forEach(res.data.Result, function (value, key) {
             p1s.push({
               p1: key,
-              p1_name: value
+              p1_name: key + ' - ' + value
             });
           });
           deferred.resolve(p1s);
@@ -189,8 +198,11 @@ angular.module('starter')
     report.getP2 = function (p1) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetP2List', { p1 : p1 })
+      $http.post(CONFIG.server + 'GetP2List', {p1: p1})
         .then(function (res) {
+          angular.forEach(res.data.Result, function(p2) {
+            p2.p2_name = p2.p2 + ' - ' + p2.p2_name;
+          });
           deferred.resolve(res.data.Result);
         }, function (error) {
           deferred.reject(error);
@@ -202,8 +214,11 @@ angular.module('starter')
     report.getProduct = function (p2) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetProductList', { p2 : p2 })
+      $http.post(CONFIG.server + 'GetProductList', {p2: p2})
         .then(function (res) {
+          angular.forEach(res.data.Result, function(prod) {
+            prod.product_vname = prod.product_no + ' - ' + prod.product_vname;
+          });
           deferred.resolve(res.data.Result);
         }, function (error) {
           deferred.reject(error);
@@ -212,10 +227,10 @@ angular.module('starter')
       return deferred.promise;
     };
 
-    report.changePassword = function(password, newPassword) {
+    report.changePassword = function (password, newPassword) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'ChangePassword', { OldPassword : password, NewPassword: newPassword })
+      $http.post(CONFIG.server + 'ChangePassword', {OldPassword: password, NewPassword: newPassword})
         .then(function (res) {
           deferred.resolve(res.data);
         }, function (error) {
