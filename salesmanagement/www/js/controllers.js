@@ -270,7 +270,7 @@ angular
 
             $scope.init();
           }, function (error) {
-            PositionOptions.alert('Lỗi', 'Không thể đăng nhập!');
+            PopupService.alert('Lỗi', 'Không thể đăng nhập!');
           })
           .finally(function () {
             $ionicLoading.hide();
