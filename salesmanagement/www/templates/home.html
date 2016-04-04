@@ -17,6 +17,9 @@
             <option value="">--Chọn loại báo cáo--</option>
           </select>
         </label>
+        <ul ng-messages="formReport.type.$error" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn báo cáo</li>
+        </ul>
 
         <label class="item item-input item-select" ng-if="isFieldAvailable('slkh')">
           <span class="input-label">
@@ -26,6 +29,9 @@
             <option value="">--Chọn khách hàng--</option>
           </select>
         </label>
+        <ul ng-messages="formReport.customer.$error" ng-if="isFieldAvailable('slkh')" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn khách hàng</li>
+        </ul>
 
         <label class="item item-input item-select" ng-if="isFieldAvailable('sltt') && checkRole([1,2])">
           <span class="input-label">
@@ -35,6 +41,9 @@
             <option value="">--Chọn nhân viên--</option>
           </select>
         </label>
+        <ul ng-messages="formReport.salemans.$error" ng-if="isFieldAvailable('sltt') && checkRole([1,2])" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn nhân viên</li>
+        </ul>
 
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
@@ -51,6 +60,10 @@
           </span>
           <input type="date" name="from" ng-model="report.from" required max="{{report.to | date:'yyyy-MM-dd'}}" ng-max="report.to">
         </label>
+        <ul ng-messages="formReport.from.$error" ng-if="isFieldAvailable(['slkh', 'sltt'])" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn ngày</li>
+          <li ng-message="max" class="assertive">Chọn ngày chưa hợp lý</li>
+        </ul>
 
         <label class="item item-input" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
@@ -58,6 +71,10 @@
           </span>
           <input type="date" name="to" ng-model="report.to" required min="{{report.from | date:'yyyy-MM-dd'}}" ng-min="report.from">
         </label>
+        <ul ng-messages="formReport.to.$error" ng-if="isFieldAvailable(['slkh', 'sltt'])" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn ngày</li>
+          <li ng-message="max" class="assertive">Chọn ngày chưa hợp lý</li>
+        </ul>
 
         <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv', 'slgd'])">
           <span class="input-label">Vùng</span>
@@ -72,6 +89,9 @@
             <option value="">--Chọn trưởng vùng--</option>
           </select>
         </label>
+        <ul ng-messages="formReport.chief.$error" ng-if="checkRole([1]) && isFieldAvailable(['sltv'])" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn trưởng vùng</li>
+        </ul>
 
         <label class="item item-input item-select" ng-if="isFieldAvailable(['sltv'])">
           <span class="input-label">Nhãn</span>
@@ -84,6 +104,9 @@
           <span class="input-label">Năm</span>
           <input type="month" name="inYear" id="inYear" required ng-model="report.inYear">
         </label>
+        <ul ng-messages="formReport.month.$error" ng-if="isFieldAvailable(['sltv'])" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn năm</li>
+        </ul>
 
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
           <span class="input-label">Chu kỳ</span>
@@ -91,6 +114,9 @@
             <option value="">--Chọn chu kỳ--</option>
           </select>
         </label>
+        <ul ng-messages="formReport.period.$error" ng-if="isFieldAvailable(['slgd'])" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn chu kỳ</li>
+        </ul>
 
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
           <span class="input-label">P1</span>
@@ -117,6 +143,9 @@
           <span class="input-label">Ngày</span>
           <input type="date" name="directorDate" id="directorDate" ng-model="report.directorDate" required>
         </label>
+        <ul ng-messages="formReport.date.$error" ng-if="isFieldAvailable(['slgd'])" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn ngày</li>
+        </ul>
 
         <div class="item">
           <button type="submit" class="button button-assertive button-block">XUẤT BÁO CÁO</button>

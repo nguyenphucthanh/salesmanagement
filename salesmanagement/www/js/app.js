@@ -34,7 +34,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
       var network = navigator.connection.type;
       if(network === Connection.NONE) {
-
+        PopupService.alert('Lỗi', 'Không tìm thấy kết nối internet!');
       }
 
       /**
@@ -57,7 +57,9 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
       };
 
       if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
-        backgroundLogin();
+        if(network !== Connection.NONE) {
+          backgroundLogin();
+        }
       }
 
       if(!$localStorage.loginData || jQuery.isEmptyObject($localStorage.loginData)) {
@@ -68,7 +70,9 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
       document.addEventListener('resume', function () {
         if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
-          backgroundLogin();
+          if(network !== Connection.NONE) {
+            backgroundLogin();
+          }
         }
       });
     });
@@ -103,7 +107,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
       .state('slgd', {
         url: '/slgd?cust_type&label_flag&p_1&p_2&product_no&tc_date&PeriodType',
-        templateUrl: 'templates/sltv.html',
+        templateUrl: 'templates/slgd.html',
         controller: 'ReportController'
       })
 

@@ -38,4 +38,7 @@
     background-color: #cdffc1;
     font-weight: bold; }
 
+.item.ng-inactive {
+  display: none; }
+
 /*# sourceMappingURL=style.css.map */

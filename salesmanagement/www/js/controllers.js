@@ -23,7 +23,7 @@ angular
         $scope.loginData = {
           username: '',
           password: '',
-          autoLogin: false
+          autoLogin: true
         };
 
         $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -270,7 +270,7 @@ angular
 
             $scope.init();
           }, function (error) {
-            PopupService.alert('Lỗi', 'Không thể đăng nhập!');
+            PopupService.alert('Lỗi', 'Không thể đăng nhập! Sale No. hoặc Password không đúng!');
           })
           .finally(function () {
             $ionicLoading.hide();
@@ -308,7 +308,7 @@ angular
           case 'slkh':
             $state.go('slkh', {
               cust_no: $scope.report.customer.cust_no,
-              part_kind: $scope.report.partKind.value,
+              part_kind: $scope.report.partKind ? $scope.report.partKind.value : '',
               tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
               tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')
             });
@@ -316,7 +316,7 @@ angular
           case 'sltt':
             $state.go('sltt', {
               sale_no: [3, 4].indexOf($scope.profile.role) >= 0 ? $scope.profile.sale_no : $scope.report.saleman.sale_no,
-              part_kind: $scope.report.partKind.value,
+              part_kind: $scope.report.partKind ? $scope.report.partKind.value : '',
               tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
               tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')
             });
@@ -328,6 +328,7 @@ angular
               label_flag: $scope.report.flag.value,
               tc_date: $filter('date')($scope.report.inYear, 'yyyy-MM-dd')
             });
+            break;
           case 'slgd':
             $state.go('slgd', {
               cust_type: $scope.checkRole([1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
@@ -338,6 +339,9 @@ angular
               PeriodType: $scope.report.period.value,
               tc_date: $filter('date')($scope.report.directorDate, 'yyyy-MM-dd')
             });
+            break;
+          default:
+            break;
         }
       };
 
