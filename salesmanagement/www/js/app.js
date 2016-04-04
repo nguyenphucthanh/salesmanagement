@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
-  .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading, $http) {
+  .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading, $http, PopupService) {
     $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
     $ionicPlatform.ready(function () {
@@ -27,6 +27,16 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
         console.error(ex);
       }
 
+        /**
+         * Detect network type
+         * navigator.connection.type
+         */
+
+      var network = navigator.connection.type;
+      if(network === Connection.NONE) {
+
+      }
+
       /**
        * on open app
        * - if auto login is set then login in background and reload default state (home page)
@@ -37,6 +47,9 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
         $ionicLoading.show();
         ReportService.login($localStorage.loginData.username, $localStorage.loginData.password, $localStorage.loginData.username)
           .then(function () {
+          }, function(error) {
+            console.error('Error Login:', error);
+            $ionicLoading.hide();
           })
           .finally(function () {
             $ionicLoading.hide();
