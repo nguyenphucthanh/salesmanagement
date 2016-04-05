@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
-  .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading, $http, PopupService) {
+  .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading, $http, PopupService, $window, $rootScope) {
     $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
     $ionicPlatform.ready(function () {
@@ -47,6 +47,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
         $ionicLoading.show();
         ReportService.login($localStorage.loginData.username, $localStorage.loginData.password, $localStorage.loginData.username)
           .then(function () {
+            $ionicLoading.hide();
           }, function(error) {
             console.error('Error Login:', error);
             $ionicLoading.hide();
@@ -76,6 +77,25 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
         }
       });
     });
+
+    try {
+      $rootScope.online = navigator.onLine;
+      $window.addEventListener("offline", function () {
+        $rootScope.$apply(function () {
+          $rootScope.online = false;
+          PopupService.alert('Lỗi', 'Không tìm thấy kết nối internet');
+        });
+      }, false);
+
+      $window.addEventListener("online", function () {
+        $rootScope.$apply(function () {
+          $rootScope.online = true;
+        });
+      }, false);
+    }
+    catch(ex) {
+      console.error(ex);
+    }
   })
 
   .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, $httpProvider) {
@@ -124,11 +144,12 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
     //$ionicConfigProvider.views.maxCache(0);
 
     $httpProvider.defaults.withCredentials = true;
+    $httpProvider.interceptors.push('myHttpInterceptor');
   })
 
   .constant('CONFIG', {
     server: {
-      'local': 'http://visitme.cloudapp.net:83/Home/',
+      'local': 'http://137.116.131.7:83/Home/',
       'live': 'http://antvn.vn/Home/'
     }['local']
   });

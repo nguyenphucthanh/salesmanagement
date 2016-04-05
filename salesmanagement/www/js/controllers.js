@@ -26,6 +26,15 @@ angular
           autoLogin: true
         };
 
+        /**
+         * show Device ID
+         */
+        $scope.showDeviceId = function () {
+          PopupService.alert('Device ID', '<span>' + (device && device.uuid ? device.uuid : 'browser') + '</span>');
+        };
+
+        $scope.deviceId = (window.device && window.device.uuid ? window.device.uuid : 'browser');
+
         $ionicModal.fromTemplateUrl('templates/login.html', {
           scope: $scope,
           animation: 'slide-in-up'
@@ -275,13 +284,6 @@ angular
           .finally(function () {
             $ionicLoading.hide();
           });
-      };
-
-      /**
-       * show Device ID
-       */
-      $scope.showDeviceId = function () {
-        PopupService.alert('Device ID', '<span>' + (device && device.uuid ? device.uuid : 'browser') + '</span>');
       };
 
       $timeout(function () {
