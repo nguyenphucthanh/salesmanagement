@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
-  .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading, $http, PopupService, $window, $rootScope) {
+  .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading, $http, PopupService, $window, $rootScope, $timeout) {
     $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
     $ionicPlatform.ready(function () {
@@ -20,20 +20,20 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
         }
         if (window.StatusBar) {
           // org.apache.cordova.statusbar required
-          StatusBar.styleDefault();
+          StatusBar.styleLightContent();
         }
       }
       catch (ex) {
         console.error(ex);
       }
 
-        /**
-         * Detect network type
-         * navigator.connection.type
-         */
+      /**
+       * Detect network type
+       * navigator.connection.type
+       */
 
       var network = navigator.connection.type;
-      if(network === Connection.NONE) {
+      if (network === Connection.NONE) {
         PopupService.alert('Lỗi', 'Không tìm thấy kết nối internet!');
       }
 
@@ -43,12 +43,12 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
        * - else remove profile in local storage
        */
 
-      var backgroundLogin = function() {
+      var backgroundLogin = function () {
         $ionicLoading.show();
         ReportService.login($localStorage.loginData.username, $localStorage.loginData.password, $localStorage.loginData.username)
           .then(function () {
             $ionicLoading.hide();
-          }, function(error) {
+          }, function (error) {
             console.error('Error Login:', error);
             $ionicLoading.hide();
           })
@@ -58,23 +58,47 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
       };
 
       if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
-        if(network !== Connection.NONE) {
+        if (network !== Connection.NONE) {
           backgroundLogin();
         }
       }
 
-      if(!$localStorage.loginData || jQuery.isEmptyObject($localStorage.loginData)) {
-        if($localStorage.profile) {
+      if (!$localStorage.loginData || jQuery.isEmptyObject($localStorage.loginData)) {
+        if ($localStorage.profile) {
           delete $localStorage.profile;
         }
       }
 
       document.addEventListener('resume', function () {
         if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
-          if(network !== Connection.NONE) {
+          if (network !== Connection.NONE) {
             backgroundLogin();
           }
         }
+      });
+
+      /**
+       * Auto Log Out after 15 minutes of idle
+       */
+      var timeoutIdle = null;
+      jQuery('body').on('touchstart', function () {
+        if(timeoutIdle) {
+          $timeout.cancel(timeoutIdle);
+          timeoutIdle = null;
+        }
+      });
+
+      jQuery('body').on('touchstart', function() {
+        timeoutIdle = $timeout(function() {
+          if($localStorage.profile) {
+            if (!$state.is('default')) {
+              $state.go('default');
+            }
+            $timeout(function() {
+              $rootScope.$broadcast('logOut');
+            }, 500);
+          }
+        }, 15 * 60 * 1000); //15 minutes
       });
     });
 
@@ -93,7 +117,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
         });
       }, false);
     }
-    catch(ex) {
+    catch (ex) {
       console.error(ex);
     }
   })
@@ -108,19 +132,19 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
       })
 
       .state('slkh', {
-        url: '/slkh?cust_no&part_kind&tc_date1&tc_date2',
+        url: '/slkh?cust_no&cust_vname&part_kind&tc_date1&tc_date2',
         templateUrl: 'templates/slkh.html',
         controller: 'ReportController'
       })
 
       .state('sltt', {
-        url: '/sltt?sale_no&part_kind&tc_date1&tc_date2',
+        url: '/sltt?sale_no&sale_ename&part_kind&tc_date1&tc_date2',
         templateUrl: 'templates/sltt.html',
         controller: 'ReportController'
       })
 
       .state('sltv', {
-        url: '/sltv?chief_no&cust_type&label_flag&tc_date',
+        url: '/sltv?chief_no&chief_ename&cust_type&label_flag&tc_date',
         templateUrl: 'templates/sltv.html',
         controller: 'ReportController'
       })

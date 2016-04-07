@@ -1,5 +1,5 @@
 <ion-view>
-  <ion-nav-title>Sản lượng khách hàng</ion-nav-title>
+  <ion-nav-title>{{params.tc_date1 | date:'yy-MM-dd'}} - {{params.tc_date2 | date:'yy-MM-dd'}}</ion-nav-title>
   <ion-content scroll="false">
     <ion-scroll delegate-handle="main" direction="xy" zooming="false" has-bouncing="false" class="table-view" on-scroll="scrollView()">
       <div class="table-fixed-header" style="top: {{ scroll.top }}px;">
@@ -26,4 +26,7 @@
       </table>
     </ion-scroll>
   </ion-content>
+  <ion-footer-bar class="bar-dark">
+    <h1 class="title">{{params.cust_vname}}</h1>
+  </ion-footer-bar>
 </ion-view>

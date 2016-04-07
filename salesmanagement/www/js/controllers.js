@@ -50,17 +50,27 @@ angular
           type: '',
           from: new Date(),
           to: new Date(),
-          customer: '',
+          customer: {},
           partKind: '',
-          saleman: '',
+          saleman: {},
           flag: '',
           inYear: new Date(),
+          inYearSelected: new Date().getFullYear(),
           area: '',
           period: '',
           p1: '',
           p2: '',
           product: '',
           directorDate: new Date()
+        };
+
+        $scope.slYears = [];
+        for(var iY = 2000; iY <= new Date().getFullYear(); iY++) {
+          $scope.slYears.push(iY);
+        }
+
+        $scope.selectInYear = function() {
+          $scope.report.inYear = new Date($scope.report.inYearSelected, 1, 1);
         };
 
         $scope.partKinds = [
@@ -129,6 +139,7 @@ angular
         $ionicLoading.show();
         ReportService.getCustomer().then(function (data) {
           $scope.customers = data.Result;
+          $scope.report.customer = data.Result[0];
         }, function () {
           PopupService.alert('Lỗi', 'Không thể lấy danh sách khách hàng!');
         }).finally(function () {
@@ -140,6 +151,7 @@ angular
         $ionicLoading.show();
         ReportService.getSaleman().then(function (data) {
           $scope.salemans = data.Result;
+          $scope.report.saleman = data.Result[0];
         }, function () {
           PopupService.alert('Lỗi', 'Không thể lấy danh sách nhân viên!');
         }).finally(function () {
@@ -168,6 +180,7 @@ angular
         $ionicLoading.show();
         ReportService.getChief().then(function (data) {
           $scope.chiefs = data.Result;
+          $scope.report.chief = data.Result[0];
         }, function () {
           PopupService.alert('Lỗi', 'Không thể lấy danh sách trưởng vùng!');
         }).finally(function () {
@@ -279,7 +292,17 @@ angular
 
             $scope.init();
           }, function (error) {
-            PopupService.alert('Lỗi', 'Không thể đăng nhập! Sale No. hoặc Password không đúng!');
+            try {
+              if(navigator.connection.type === Connection.NONE) {
+                PopupService.alert('Lỗi', 'Không thể đăng nhập! Kiểm tra kết nối internet của bạn!');
+              }
+              else {
+                PopupService.alert('Lỗi', 'Không thể đăng nhập! Sale No. hoặc Password không đúng!');
+              }
+            }
+            catch(ex) {
+              console.error(ex);
+            }
           })
           .finally(function () {
             $ionicLoading.hide();
@@ -299,6 +322,10 @@ angular
         $scope.modal.show();
       };
 
+      $scope.$on('logOut', function() {
+        $scope.logOut();
+      });
+
       /**
        * go to report page
        */
@@ -310,6 +337,7 @@ angular
           case 'slkh':
             $state.go('slkh', {
               cust_no: $scope.report.customer.cust_no,
+              cust_vname: $scope.report.customer.cust_vname,
               part_kind: $scope.report.partKind ? $scope.report.partKind.value : '',
               tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
               tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')
@@ -318,6 +346,7 @@ angular
           case 'sltt':
             $state.go('sltt', {
               sale_no: [3, 4].indexOf($scope.profile.role) >= 0 ? $scope.profile.sale_no : $scope.report.saleman.sale_no,
+              sale_ename: [3, 4].indexOf($scope.profile.role) >= 0 ? $scope.profile.sale_ename : $scope.report.saleman.sale_ename,
               part_kind: $scope.report.partKind ? $scope.report.partKind.value : '',
               tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
               tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')
@@ -326,6 +355,7 @@ angular
           case 'sltv':
             $state.go('sltv', {
               chief_no: $scope.checkRole([1]) ? $scope.report.chief.sale_no : $scope.profile.sale_no,
+              chief_ename: $scope.checkRole([1]) ? $scope.report.chief.sale_ename : $scope.profile.sale_ename,
               cust_type: $scope.checkRole([1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
               label_flag: $scope.report.flag.value,
               tc_date: $filter('date')($scope.report.inYear, 'yyyy-MM-dd')

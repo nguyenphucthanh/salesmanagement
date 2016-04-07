@@ -26,7 +26,7 @@
             Khách hàng
           </span>
           <select name="customer" ng-model="report.customer" ng-options="customer as customer.cust_vname for customer in customers track by customer.cust_no" required>
-            <option value="">--Chọn khách hàng--</option>
+            <!--<option value="">&#45;&#45;Chọn khách hàng&#45;&#45;</option>-->
           </select>
         </label>
         <ul ng-messages="formReport.customer.$error" ng-if="isFieldAvailable('slkh')" class="item">
@@ -38,7 +38,7 @@
             Nhân viên
           </span>
           <select name="salemans" ng-model="report.saleman" ng-options="saleman as saleman.sale_ename for saleman in salemans track by saleman.sale_no" required>
-            <option value="">--Chọn nhân viên--</option>
+            <!--<option value="">&#45;&#45;Chọn nhân viên&#45;&#45;</option>-->
           </select>
         </label>
         <ul ng-messages="formReport.salemans.$error" ng-if="isFieldAvailable('sltt') && checkRole([1,2])" class="item">
@@ -86,7 +86,7 @@
         <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv'])">
           <span class="input-label">Trưởng vùng</span>
           <select name="chief" id="chief" ng-model="report.chief" ng-options="chief as chief.sale_ename for chief in chiefs track by chief.sale_no" required>
-            <option value="">--Chọn trưởng vùng--</option>
+            <!--<option value="">&#45;&#45;Chọn trưởng vùng&#45;&#45;</option>-->
           </select>
         </label>
         <ul ng-messages="formReport.chief.$error" ng-if="checkRole([1]) && isFieldAvailable(['sltv'])" class="item">
@@ -100,9 +100,11 @@
           </select>
         </label>
 
-        <label class="item item-input" ng-if="isFieldAvailable(['sltv'])">
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['sltv'])">
           <span class="input-label">Năm</span>
-          <input type="month" name="inYear" id="inYear" required ng-model="report.inYear">
+          <!--<input type="month" name="inYear" id="inYear" required ng-model="report.inYear">-->
+          <select name="inYear" id="inYear" required ng-model="report.inYearSelected" ng-change="selectInYear()" ng-options="year as year for year in slYears track by year">
+          </select>
         </label>
         <ul ng-messages="formReport.month.$error" ng-if="isFieldAvailable(['sltv'])" class="item">
           <li ng-message="required" class="assertive">Xin vui lòng chọn năm</li>

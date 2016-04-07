@@ -1,5 +1,5 @@
 <ion-view>
-  <ion-nav-title>Sản lượng giám đốc</ion-nav-title>
+  <ion-nav-title>Từ ngày {{params.tc_date | date:'yy-MM-dd'}}</ion-nav-title>
   <ion-content scroll="false">
     <ion-scroll delegate-handle="main" direction="xy" zooming="false" has-bouncing="false" class="table-view" on-scroll="scrollView()">
       <div class="table-fixed-header" style="top: {{ scroll.top }}px;">

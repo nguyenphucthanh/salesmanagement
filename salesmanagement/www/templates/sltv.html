@@ -1,5 +1,5 @@
 <ion-view>
-  <ion-nav-title>Sản lượng trưởng vùng</ion-nav-title>
+  <ion-nav-title>Từ năm {{params.tc_date | date:'yyyy'}}</ion-nav-title>
   <ion-content scroll="false">
     <ion-scroll delegate-handle="main" direction="xy" zooming="false" has-bouncing="false" class="table-view" on-scroll="scrollView()">
       <div class="table-fixed-header" style="top: {{ scroll.top }}px;">
@@ -15,15 +15,18 @@
       <table grid-view-scroll header="'#table-header'" column="'#table-column'" freeze-column-size="1" class="table">
         <thead>
           <tr class="balanced-bg">
-            <th scope="col" class="light" ng-class="{ 'frozen' : $index < 1 }" ng-repeat="idx in data.index">{{ idx }}</th>
+            <th scope="col" class="light" ng-class="{ 'frozen' : $index < 2 }" ng-repeat="idx in data.index">{{ idx }}</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="(key, value) in data.data" class="" ng-class="{ 'table-footer' : $last }">
-            <td class="" ng-class="{ 'frozen' : $index < 1 }" ng-repeat="c in value track by $index">{{ c }}</td>
+            <td class="" ng-class="{ 'frozen' : $index < 2 }" ng-repeat="c in value track by $index">{{ c }}</td>
           </tr>
         </tbody>
       </table>
     </ion-scroll>
   </ion-content>
+  <ion-footer-bar class="bar-dark">
+    <h1 class="title">{{params.chief_ename}}</h1>
+  </ion-footer-bar>
 </ion-view>

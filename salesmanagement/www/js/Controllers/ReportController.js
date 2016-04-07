@@ -26,11 +26,22 @@ angular.module('starter')
               break;
       }
 
+      $scope.params = $stateParams;
       ReportService[functionName]($stateParams).then(function (data) {
         $scope.data = data.Result;
         $scope.$broadcast('grid');
       }, function () {
-        PopupService.alert('Lỗi', 'Không thể lấy dữ liệu báo cáo');
+        try {
+          if (navigator.connection.type === Connection.NONE) {
+            PopupService.alert('Lỗi', 'Không thể đăng nhập! Kiểm tra kết nối internet của bạn!');
+          }
+          else {
+            PopupService.alert('Lỗi', 'Không thể lấy dữ liệu báo cáo');
+          }
+        }
+        catch(ex) {
+          console.error(ex);
+        }
       }).finally(function () {
         $ionicLoading.hide();
       });
