@@ -57,7 +57,7 @@ angular
           inYear: new Date(),
           inYearSelected: new Date().getFullYear(),
           area: '',
-          period: '',
+          period: {},
           p1: '',
           p2: '',
           product: '',
@@ -70,7 +70,7 @@ angular
         }
 
         $scope.selectInYear = function() {
-          $scope.report.inYear = new Date($scope.report.inYearSelected, 1, 1);
+          $scope.report.inYear = new Date($scope.report.inYearSelected, 0, 1);
         };
 
         $scope.partKinds = [
@@ -130,6 +130,8 @@ angular
           { name : 'Quarterly', value : 4 },
           { name : 'Annually', value : 5 }
         ];
+
+        $scope.report.period = $scope.periods[0];
       };
 
       /**
@@ -292,6 +294,7 @@ angular
 
             $scope.init();
           }, function (error) {
+            console.log(error);
             try {
               if(navigator.connection.type === Connection.NONE) {
                 PopupService.alert('Lỗi', 'Không thể đăng nhập! Kiểm tra kết nối internet của bạn!');
@@ -357,14 +360,14 @@ angular
               chief_no: $scope.checkRole([1]) ? $scope.report.chief.sale_no : $scope.profile.sale_no,
               chief_ename: $scope.checkRole([1]) ? $scope.report.chief.sale_ename : $scope.profile.sale_ename,
               cust_type: $scope.checkRole([1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
-              label_flag: $scope.report.flag.value,
+              label_flag: $scope.report.flag ? $scope.report.flag.value : '',
               tc_date: $filter('date')($scope.report.inYear, 'yyyy-MM-dd')
             });
             break;
           case 'slgd':
             $state.go('slgd', {
               cust_type: $scope.checkRole([1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
-              label_flag: $scope.report.flag.value,
+              label_flag: $scope.report.flag ? $scope.report.flag.value : '',
               p_1: $scope.report.p1 ? $scope.report.p1.p1 : '',
               p_2: $scope.report.p2 ? $scope.report.p2.p2 : '',
               product_no: $scope.report.product ? $scope.report.product.product_no : '',

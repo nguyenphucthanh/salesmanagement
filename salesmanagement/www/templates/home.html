@@ -113,7 +113,7 @@
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
           <span class="input-label">Chu kỳ</span>
           <select name="period" id="period" ng-model="report.period" ng-options="per as per.name for per in periods track by per.value" required>
-            <option value="">--Chọn chu kỳ--</option>
+            <!--<option value="">&#45;&#45;Chọn chu kỳ&#45;&#45;</option>-->
           </select>
         </label>
         <ul ng-messages="formReport.period.$error" ng-if="isFieldAvailable(['slgd'])" class="item">
