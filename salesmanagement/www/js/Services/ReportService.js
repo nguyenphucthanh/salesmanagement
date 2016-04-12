@@ -21,7 +21,7 @@ angular.module('starter')
         "Imei": imei
       }).then(function (res) {
         $localStorage.profile = res.data;
-        deferred.resolve(res);
+        deferred.resolve(res.data);
       }, function (error) {
         deferred.reject(error);
       });

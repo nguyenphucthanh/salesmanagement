@@ -43,58 +43,70 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
        * - else remove profile in local storage
        */
 
-      var backgroundLogin = function () {
-        $ionicLoading.show();
-        ReportService.login($localStorage.loginData.username, $localStorage.loginData.password, $localStorage.loginData.username)
-          .then(function () {
-            $ionicLoading.hide();
-          }, function (error) {
-            console.error('Error Login:', error);
-            $ionicLoading.hide();
-          })
-          .finally(function () {
-            $ionicLoading.hide();
-          });
-      };
+      //var backgroundLogin = function () {
+      //  $ionicLoading.show();
+      //  ReportService.login($localStorage.loginData.username, $localStorage.loginData.password, $localStorage.loginData.username)
+      //    .then(function () {
+      //      $ionicLoading.hide();
+      //    }, function (error) {
+      //      console.error('Error Login:', error);
+      //      $ionicLoading.hide();
+      //    })
+      //    .finally(function () {
+      //      $ionicLoading.hide();
+      //    });
+      //};
 
-      if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
-        if (network !== Connection.NONE) {
-          backgroundLogin();
-        }
+      //if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
+      //  if (network !== Connection.NONE) {
+      //    backgroundLogin();
+      //  }
+      //}
+
+      //if (!$localStorage.loginData || jQuery.isEmptyObject($localStorage.loginData)) {
+      //  if ($localStorage.profile) {
+      //    delete $localStorage.profile;
+      //  }
+      //}
+
+      //document.addEventListener('resume', function () {
+      //  if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
+      //    if (network !== Connection.NONE) {
+      //      backgroundLogin();
+      //    }
+      //  }
+      //});
+
+      /**
+       * Delete logged in data on starting app
+       */
+
+      if ($localStorage.loginData) {
+        delete $localStorage.loginData;
       }
 
-      if (!$localStorage.loginData || jQuery.isEmptyObject($localStorage.loginData)) {
-        if ($localStorage.profile) {
-          delete $localStorage.profile;
-        }
+      if ($localStorage.profile) {
+        delete $localStorage.profile;
       }
-
-      document.addEventListener('resume', function () {
-        if (!jQuery.isEmptyObject($localStorage.loginData) && $localStorage.loginData && $localStorage.loginData.autoLogin) {
-          if (network !== Connection.NONE) {
-            backgroundLogin();
-          }
-        }
-      });
 
       /**
        * Auto Log Out after 15 minutes of idle
        */
       var timeoutIdle = null;
       jQuery('body').on('touchstart', function () {
-        if(timeoutIdle) {
+        if (timeoutIdle) {
           $timeout.cancel(timeoutIdle);
           timeoutIdle = null;
         }
       });
 
-      jQuery('body').on('touchstart', function() {
-        timeoutIdle = $timeout(function() {
-          if($localStorage.profile) {
+      jQuery('body').on('touchstart', function () {
+        timeoutIdle = $timeout(function () {
+          if ($localStorage.profile) {
             if (!$state.is('default')) {
               $state.go('default');
             }
-            $timeout(function() {
+            $timeout(function () {
               $rootScope.$broadcast('logOut');
             }, 500);
           }
@@ -111,7 +123,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
           try {
             $ionicLoading.hide();
           }
-          catch(ex) {
+          catch (ex) {
             console.error(ex);
           }
         });
@@ -181,5 +193,5 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
     server: {
       'local': 'http://137.116.131.7:83/Home/',
       'live': 'http://antvn.vn/Home/'
-    }['live']
+    }['local']
   });

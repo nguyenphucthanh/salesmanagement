@@ -22,8 +22,7 @@ angular
 
         $scope.loginData = {
           username: '',
-          password: '',
-          autoLogin: true
+          password: ''
         };
 
         /**
@@ -37,10 +36,19 @@ angular
 
         $ionicModal.fromTemplateUrl('templates/login.html', {
           scope: $scope,
-          animation: 'slide-in-up'
+          animation: 'slide-in-up',
+          backdropClickToClose: false,
+          hardwareBackButtonClose: false,
+          focusFirstInput: true
         }).then(function (modal) {
           $scope.modal = modal;
 
+          if (!$localStorage.profile) {
+            $scope.modal.show();
+          }
+        });
+
+        $scope.$on('modal.hidden', function() {
           if (!$localStorage.profile) {
             $scope.modal.show();
           }
@@ -285,14 +293,16 @@ angular
 
         ReportService.login(_username, _password, _imei)
           .then(function (data) {
-            $scope.profile = $localStorage.profile;
-            $scope.modal.hide();
+            if(data && data.Result) {
+              $scope.profile = $localStorage.profile;
+              $scope.modal.hide();
 
-            if (!username && $scope.loginData.autoLogin) {
-              $localStorage.loginData = $scope.loginData;
+              //if (!username && $scope.loginData.autoLogin) {
+              //  $localStorage.loginData = $scope.loginData;
+              //}
+
+              $scope.init();
             }
-
-            $scope.init();
           }, function (error) {
             console.log(error);
             try {
