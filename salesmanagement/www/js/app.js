@@ -7,6 +7,12 @@
 angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
   .run(function ($ionicPlatform, $localStorage, $state, ReportService, $ionicLoading, $http, PopupService, $window, $rootScope, $timeout) {
+    /**
+     * Delete logged in data on starting app
+     */
+    delete $localStorage.loginData;
+    delete $localStorage.profile;
+
     $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
     $ionicPlatform.ready(function () {
@@ -76,18 +82,6 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
       //    }
       //  }
       //});
-
-      /**
-       * Delete logged in data on starting app
-       */
-
-      if ($localStorage.loginData) {
-        delete $localStorage.loginData;
-      }
-
-      if ($localStorage.profile) {
-        delete $localStorage.profile;
-      }
 
       /**
        * Auto Log Out after 15 minutes of idle
