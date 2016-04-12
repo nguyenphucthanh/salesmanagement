@@ -293,7 +293,7 @@ angular
 
         ReportService.login(_username, _password, _imei)
           .then(function (data) {
-            if(data && data.Result) {
+            if(data && data.sale_no) {
               $scope.profile = $localStorage.profile;
               $scope.modal.hide();
 
