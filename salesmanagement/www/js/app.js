@@ -108,6 +108,12 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
         $rootScope.$apply(function () {
           $rootScope.online = false;
           PopupService.alert('Lỗi', 'Không tìm thấy kết nối internet');
+          try {
+            $ionicLoading.hide();
+          }
+          catch(ex) {
+            console.error(ex);
+          }
         });
       }, false);
 
@@ -175,5 +181,5 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
     server: {
       'local': 'http://137.116.131.7:83/Home/',
       'live': 'http://antvn.vn/Home/'
-    }['local']
+    }['live']
   });
