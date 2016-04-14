@@ -2,7 +2,7 @@
  * Created by thanhnguyen on 3/29/16.
  */
 angular.module('starter')
-  .service('ReportService', ['CONFIG', '$q', '$http', '$localStorage', function (CONFIG, $q, $http, $localStorage) {
+  .service('ReportService', ['CONFIG', '$q', '$http', '$localStorage', '$timeout', function (CONFIG, $q, $http, $localStorage, $timeout) {
     var report = {};
 
     /**
@@ -19,12 +19,18 @@ angular.module('starter')
         "Email": email,
         "Password": password,
         "Imei": imei
+      }, {
+        timeout: deferred.promise
       }).then(function (res) {
         $localStorage.profile = res.data;
         deferred.resolve(res.data);
       }, function (error) {
         deferred.reject(error);
       });
+
+      $timeout(function() {
+        deferred.reject({ status: 'timeout' })
+      }, 10000);
 
       return deferred.promise;
     };

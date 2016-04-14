@@ -306,7 +306,10 @@ angular
           }, function (error) {
             console.log(error);
             try {
-              if(navigator.connection.type === Connection.NONE) {
+              if(error.status === 'timeout') {
+                PopupService.alert('Lỗi', 'Không thể đăng nhập! Kết nối đến server không thể thiết lập!');
+              }
+              else if(navigator.connection.type === Connection.NONE) {
                 PopupService.alert('Lỗi', 'Không thể đăng nhập! Kiểm tra kết nối internet của bạn!');
               }
               else {

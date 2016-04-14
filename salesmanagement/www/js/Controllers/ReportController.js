@@ -57,5 +57,9 @@ angular.module('starter')
         $scope.$apply(function() {
           $scope.scroll = pos;
         });
-      }
+      };
+
+      $scope.isTotal = function(value) {
+        return /total/i.test(value);
+      };
     }]);

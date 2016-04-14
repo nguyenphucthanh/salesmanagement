@@ -37,10 +37,14 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
        * Detect network type
        * navigator.connection.type
        */
-
-      var network = navigator.connection.type;
-      if (network === Connection.NONE) {
-        PopupService.alert('Lỗi', 'Không tìm thấy kết nối internet!');
+      try {
+        var network = navigator.connection.type;
+        if (network === Connection.NONE) {
+          PopupService.alert('Lỗi', 'Không tìm thấy kết nối internet!');
+        }
+      }
+      catch (ex) {
+        console.error(ex);
       }
 
       /**
@@ -96,14 +100,14 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
 
       jQuery('body').on('touchstart', function () {
         timeoutIdle = $timeout(function () {
-          if ($localStorage.profile) {
+          //if ($localStorage.profile) {
             if (!$state.is('default')) {
               $state.go('default');
             }
             $timeout(function () {
               $rootScope.$broadcast('logOut');
             }, 500);
-          }
+          //}
         }, 15 * 60 * 1000); //15 minutes
       });
     });
