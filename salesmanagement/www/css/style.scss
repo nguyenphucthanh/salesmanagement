@@ -63,3 +63,8 @@
 .text-bold {
   font-weight: bold;
 }
+
+
+table.table[grid-view-scroll] {
+  min-width: 100%;
+}
