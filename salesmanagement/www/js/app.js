@@ -12,6 +12,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
      */
     delete $localStorage.loginData;
     delete $localStorage.profile;
+    var idleTime = 15;
 
     $http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
@@ -87,28 +88,52 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
       //  }
       //});
 
+      var kickAss = function() {
+        if (!$state.is('default')) {
+          $state.go('default');
+        }
+        $timeout(function () {
+          $rootScope.$broadcast('logOut');
+        }, 500);
+      };
+
+      $rootScope.$on('goHome', function() {
+        if (!$state.is('default')) {
+          $state.go('default');
+        }
+      });
+
+      document.addEventListener('pause', function() {
+        $localStorage.pauseTime = new Date();
+      }, false);
+
+      document.addEventListener('resume', function() {
+        var now = new Date();
+        var diff = now - $localStorage.pauseTime;
+
+        var diffInMinutes = (diff / 1000) / 60;
+        if(diffInMinutes >= idleTime) {
+          kickAss();
+        }
+      }, false);
+
+
       /**
        * Auto Log Out after 15 minutes of idle
        */
       var timeoutIdle = null;
+
       jQuery('body').on('touchstart', function () {
         if (timeoutIdle) {
           $timeout.cancel(timeoutIdle);
           timeoutIdle = null;
         }
-      });
 
-      jQuery('body').on('touchstart', function () {
         timeoutIdle = $timeout(function () {
           //if ($localStorage.profile) {
-            if (!$state.is('default')) {
-              $state.go('default');
-            }
-            $timeout(function () {
-              $rootScope.$broadcast('logOut');
-            }, 500);
+            kickAss();
           //}
-        }, 15 * 60 * 1000); //15 minutes
+        }, idleTime * 60 * 1000); //15 minutes
       });
     });
 

@@ -1,4 +1,4 @@
-angular.module('starter').factory('myHttpInterceptor', ['$q', function ($q) {
+angular.module('starter').factory('myHttpInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
   return {
     // optional method
     'request': function (config) {
@@ -23,6 +23,12 @@ angular.module('starter').factory('myHttpInterceptor', ['$q', function ($q) {
     // optional method
     'responseError': function (rejection) {
       // do something on error
+      if(rejection.status === 401 || rejection.status === 404) {
+        $rootScope.$broadcast('goHome');
+        $timeout(function () {
+          $rootScope.$broadcast('logOut');
+        }, 500);
+      }
       return $q.reject(rejection);
     }
   };
