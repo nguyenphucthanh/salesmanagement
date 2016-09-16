@@ -7,8 +7,12 @@
     padding: 2px;
     border: solid 1px #cccccc;
     font-size: 12px; }
+  .table td {
+    background: #c0d1df; }
   .table th {
     font-weight: bold; }
+  .table thead th {
+    background: #6099ce; }
   .table-view {
     width: 100%;
     height: 100%;
@@ -20,6 +24,8 @@
     z-index: 11;
     background-color: #ffffff;
     overflow: hidden; }
+    .table-fixed-header .table-header tr th {
+      background: #6099ce; }
   .table-fixed-header-inner {
     position: absolute;
     left: 0;
@@ -32,11 +38,16 @@
     left: 0;
     top: 0;
     z-index: 10;
-    background-color: #cdffc1;
+    background-color: #b8d0e4;
     overflow: hidden; }
+    .table-fixed-column td {
+      background: #b8d0e4; }
+    .table-fixed-column .table-footer td {
+      background: #6099ce; }
   .table-footer {
-    background-color: #cdffc1;
     font-weight: bold; }
+    .table-footer td {
+      background-color: #6099ce; }
 
 .item.ng-inactive {
   display: none; }

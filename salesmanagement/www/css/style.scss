@@ -13,8 +13,19 @@
     }
   }
 
+  td {
+    background: #c0d1df;
+  }
+
   th {
     font-weight: bold;
+  }
+
+  thead {
+    th {
+      background: #6099ce;
+
+    }
   }
 
   &-view {
@@ -30,6 +41,14 @@
     z-index: 11;
     background-color: #ffffff;
     overflow: hidden;
+
+    .table-header {
+      tr {
+        th {
+          background: #6099ce;
+        }
+      }
+    }
   }
 
   &-fixed-header-inner {
@@ -46,13 +65,25 @@
     left: 0;
     top: 0;
     z-index: 10;
-    background-color: #cdffc1;
+    background-color: #b8d0e4;
     overflow: hidden;
+
+    td {
+      background: #b8d0e4;
+    }
+
+    .table-footer {
+      td {
+        background: #6099ce;
+      }
+    }
   }
 
   &-footer {
-    background-color: #cdffc1;
     font-weight: bold;
+    td {
+      background-color: #6099ce;
+    }
   }
 }
 
