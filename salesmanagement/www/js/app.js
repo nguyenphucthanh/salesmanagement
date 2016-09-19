@@ -216,5 +216,5 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages'])
     server: {
       'local': 'http://137.116.131.7:83/Home/',
       'live': 'http://antvn.vn/Home/'
-    }['local']
+    }['live']
   });
