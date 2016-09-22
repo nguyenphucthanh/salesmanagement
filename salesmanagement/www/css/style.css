@@ -8,11 +8,13 @@
     border: solid 1px #cccccc;
     font-size: 12px; }
   .table td {
-    background: #c0d1df; }
+    background: #e2eaf0; }
   .table th {
     font-weight: bold; }
   .table thead th {
     background: #6099ce; }
+  .table tr.highlight td {
+    background: #b8d0e4 !important; }
   .table-view {
     width: 100%;
     height: 100%;
@@ -46,8 +48,11 @@
       background: #6099ce; }
   .table-footer {
     font-weight: bold; }
+    .table .table-footer.highlight td {
+      background-color: #6099ce !important; }
     .table-footer td {
-      background-color: #6099ce; }
+      background-color: #6099ce;
+      color: white; }
 
 .item.ng-inactive {
   display: none; }

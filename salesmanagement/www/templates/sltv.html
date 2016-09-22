@@ -19,7 +19,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="(key, value) in data.data" class="" ng-class="{ 'table-footer' : $last }">
+          <tr ng-repeat="(key, value) in data.data"
+              class=""
+              ng-class="{ 'table-footer' : $last, 'highlight': value[1].indexOf('Total') >= 0, 'text-bold': value[1].indexOf('Total') >= 0 }">
             <td class="" ng-class="{ 'frozen' : $index < 2 }" ng-repeat="c in value track by $index">{{ c }}</td>
           </tr>
         </tbody>

@@ -9,6 +9,7 @@
   <ion-content class="has-header">
     <form name="formReport" ng-submit="submitReport(formReport)">
       <div class="list">
+        <!--Chọn lựa loại báo cáo-->
         <label class="item item-input item-select balanced-bg">
           <span class="input-label light">
             Báo cáo
@@ -21,6 +22,7 @@
           <li ng-message="required" class="assertive">Xin vui lòng chọn báo cáo</li>
         </ul>
 
+        <!--Khách hàng / Sản lượng khách hàng-->
         <label class="item item-input item-select" ng-if="isFieldAvailable('slkh')">
           <span class="input-label">
             Khách hàng
@@ -33,6 +35,7 @@
           <li ng-message="required" class="assertive">Xin vui lòng chọn khách hàng</li>
         </ul>
 
+        <!--Nhân viên / Sản lượng tiếp thị-->
         <label class="item item-input item-select" ng-if="isFieldAvailable('sltt') && checkRole([1,2])">
           <span class="input-label">
             Nhân viên
@@ -45,6 +48,7 @@
           <li ng-message="required" class="assertive">Xin vui lòng chọn nhân viên</li>
         </ul>
 
+        <!--Loại / Sản lượng khách hàng / tiếp thị-->
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
             Loại
@@ -54,6 +58,7 @@
           </select>
         </label>
 
+        <!--từ ngày / sản lượng khách hàng / tiếp thị-->
         <label class="item item-input" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
             Từ ngày
@@ -65,6 +70,7 @@
           <li ng-message="max" class="assertive">Chọn ngày chưa hợp lý</li>
         </ul>
 
+        <!--Đến ngày / sản lượng khách hàng / tiếp thị-->
         <label class="item item-input" ng-if="isFieldAvailable(['slkh', 'sltt'])">
           <span class="input-label">
             Đến ngày
@@ -76,6 +82,7 @@
           <li ng-message="max" class="assertive">Chọn ngày chưa hợp lý</li>
         </ul>
 
+        <!--Vùng / Sản lượng trưởng vùng / giám đốc-->
         <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv', 'slgd'])">
           <span class="input-label">Vùng</span>
           <select name="area" id="area" ng-model="report.area" ng-options="area as area.name for area in areas track by area.value">
@@ -83,6 +90,7 @@
           </select>
         </label>
 
+        <!--Chọn trưởng vùng / Sản lượng trưởng vùng-->
         <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv'])">
           <span class="input-label">Trưởng vùng</span>
           <select name="chief" id="chief" ng-model="report.chief" ng-options="chief as chief.sale_ename for chief in chiefs track by chief.sale_no" required>
@@ -93,6 +101,7 @@
           <li ng-message="required" class="assertive">Xin vui lòng chọn trưởng vùng</li>
         </ul>
 
+        <!--Nhãn / Sản lượng trưởng vùng-->
         <label class="item item-input item-select" ng-if="isFieldAvailable(['sltv'])">
           <span class="input-label">Nhãn</span>
           <select name="flag" id="flag" ng-model="report.flag" ng-options="flag as flag.name for flag in flags track by flag.value">
@@ -100,6 +109,7 @@
           </select>
         </label>
 
+        <!--Năm / Sản lượng trưởng vùng-->
         <label class="item item-input item-select" ng-if="isFieldAvailable(['sltv'])">
           <span class="input-label">Năm</span>
           <!--<input type="month" name="inYear" id="inYear" required ng-model="report.inYear">-->
@@ -110,9 +120,12 @@
           <li ng-message="required" class="assertive">Xin vui lòng chọn năm</li>
         </ul>
 
+        <!--Chu kỳ / Sản lượng giám đốc-->
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
           <span class="input-label">Chu kỳ</span>
-          <select name="period" id="period" ng-model="report.period" ng-options="per as per.name for per in periods track by per.value" required>
+          <select name="period" id="period" ng-model="report.period" ng-options="per as per.name for per in periods track by per.value"
+                  ng-change="selectSlgdPeriod()"
+                  required>
             <!--<option value="">&#45;&#45;Chọn chu kỳ&#45;&#45;</option>-->
           </select>
         </label>
@@ -120,6 +133,7 @@
           <li ng-message="required" class="assertive">Xin vui lòng chọn chu kỳ</li>
         </ul>
 
+        <!--P1 / sản lượng giám đốc-->
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
           <span class="input-label">P1</span>
           <select name="p1" id="p1" ng-model="report.p1" ng-options="p as p.p1_name for p in p1 track by p.p1" ng-change="getP2()">
@@ -127,6 +141,7 @@
           </select>
         </label>
 
+        <!--P2 / sản lượng giám đốc-->
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
           <span class="input-label">P2</span>
           <select name="p2" id="p2" ng-model="report.p2" ng-options="p as p.p2_name for p in p2 track by p.p2" ng-change="getProduct()">
@@ -134,6 +149,7 @@
           </select>
         </label>
 
+        <!--sản phẩm / sản lượng giám đốc-->
         <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd'])">
           <span class="input-label">Sản phẩm</span>
           <select name="product" id="product" ng-model="report.product" ng-options="p as p.product_vname for p in products track by p.product_no">
@@ -141,10 +157,55 @@
           </select>
         </label>
 
-        <label class="item item-input" ng-if="isFieldAvailable(['slgd'])">
+        <!--Báo cáo theo ngày / sản lượng giám đốc-->
+        <label class="item item-input" ng-if="isFieldAvailable(['slgd']) && report.period.name == 'Daily'">
           <span class="input-label">Ngày</span>
           <input type="date" name="directorDate" id="directorDate" ng-model="report.directorDate" required>
         </label>
+        <!--báo cáo theo ngày / sản lượng giám đốc-->
+
+        <!--báo cáo theo năm / sản lượng giám đốc-->
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd']) && report.period.name == 'Annually'">
+          <span class="input-label">Năm</span>
+          <select name="directorAnnualYear" id="directorAnnualYear" ng-model="report.slgdAnnual" required
+                  ng-change="slgdAsAnnual()"
+                  ng-options="year as year for year in slYears"></select>
+        </label>
+        <!--báo cáo theo năm / sản lượng giám đốc-->
+
+        <!--báo cáo theo quý / sản lượng giám đốc-->
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd']) && report.period.name == 'Quarterly'">
+          <span class="input-label">Quý</span>
+          <select name="directorQuarterlyQuarter" id="directorQuarterlyQuarter" ng-model="report.slgdQuarterlyQuater" required
+                  ng-change="slgdAsQuarterly()"
+                  ng-options="q as q for q in [1,2,3,4]"></select>
+        </label>
+
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd']) && report.period.name == 'Quarterly'">
+          <span class="input-label">Năm</span>
+          <select name="directorQuarterlyYear" id="directorQuarterlyYear" ng-model="report.slgdQuarterlyYear" required
+                  ng-change="slgdAsQuarterly()"
+                  ng-options="year as year for year in slYears"></select>
+        </label>
+        <!--báo cáo theo quý / sản lượng giám đốc-->
+
+        <!--báo cáo theo tháng / sản lượng giám đốc-->
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd']) && report.period.name == 'Monthly'">
+          <span class="input-label">Tháng</span>
+          <select name="directorMonthlyMonth" id="directorMonthlyMonth" ng-model="report.slgdMonthlyMonth" required
+                  ng-change="slgdAsMonthly()">
+            <option value="{{m}}" ng-repeat="m in [0,1,2,3,4,5,6,7,8,9,10,11]" ng-selected="report.slgdMonthlyMonth == m">{{m + 1}}</option>
+          </select>
+        </label>
+
+        <label class="item item-input item-select" ng-if="isFieldAvailable(['slgd']) && report.period.name == 'Monthly'">
+          <span class="input-label">Năm</span>
+          <select name="directorMonthlyYear" id="directorMonthlyYear" ng-model="report.slgdMonthlyYear" required
+                  ng-change="slgdAsMonthly()"
+                  ng-options="year as year for year in slYears"></select>
+        </label>
+        <!--báo cáo theo tháng / sản lượng giám đốc-->
+
         <ul ng-messages="formReport.date.$error" ng-if="isFieldAvailable(['slgd'])" class="item">
           <li ng-message="required" class="assertive">Xin vui lòng chọn ngày</li>
         </ul>

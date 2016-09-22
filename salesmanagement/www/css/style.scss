@@ -14,7 +14,8 @@
   }
 
   td {
-    background: #c0d1df;
+    background: lighten(#c0d1df, 10%);
+
   }
 
   th {
@@ -25,6 +26,12 @@
     th {
       background: #6099ce;
 
+    }
+  }
+
+  tr.highlight {
+    td {
+      background: #b8d0e4 !important;
     }
   }
 
@@ -81,8 +88,19 @@
 
   &-footer {
     font-weight: bold;
+
+    .table & {
+      &.highlight {
+        td {
+          background-color: #6099ce !important;
+        }
+      }
+    }
+
     td {
       background-color: #6099ce;
+      color: white;
+
     }
   }
 }

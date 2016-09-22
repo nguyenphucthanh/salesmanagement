@@ -133,13 +133,24 @@ angular
 
         $scope.periods = [
           { name : 'Daily', value : 1 },
-          { name : 'Weekly', value : 2 },
+          // { name : 'Weekly', value : 2 },
           { name : 'Monthly', value : 3 },
           { name : 'Quarterly', value : 4 },
           { name : 'Annually', value : 5 }
         ];
 
         $scope.report.period = $scope.periods[0];
+
+        //báo cáo sản lượng giám đốc theo năm
+        $scope.report.slgdAnnual = new Date().getFullYear();
+
+        //báo cáo sản lượng giám đốc theo quý
+        $scope.report.slgdQuarterlyYear = new Date().getFullYear();
+        $scope.report.slgdQuarterlyQuater = parseInt((new Date().getMonth() + 1) / 4) + 1;
+
+        //báo cáo sản lượng giám đốc theo tháng
+        $scope.report.slgdMonthlyMonth = new Date().getMonth();
+        $scope.report.slgdMonthlyYear = new Date().getFullYear();
       };
 
       /**
@@ -400,5 +411,37 @@ angular
         else {
           return false;
         }
-      }
+      };
+
+      $scope.slgdAsAnnual = function() {
+        $scope.report.directorDate = new Date($scope.report.slgdAnnual, 1, 1);
+      };
+
+      $scope.slgdAsQuarterly = function() {
+        var month = ($scope.report.slgdQuarterlyQuater * 3) - 1;
+        $scope.report.directorDate = new Date($scope.report.slgdQuarterlyYear, month, 1);
+      };
+
+      $scope.slgdAsMonthly = function() {
+        $scope.report.directorDate = new Date($scope.report.slgdMonthlyYear, $scope.report.slgdMonthlyMonth, 1);
+      };
+
+
+      $scope.selectSlgdPeriod = function() {
+        switch ($scope.report.period.name) {
+          case 'Daily':
+          default:
+            $scope.report.directorDate = new Date();
+            break;
+          case 'Monthly':
+            $scope.slgdAsMonthly();
+            break;
+          case 'Quarterly':
+            $scope.slgdAsQuarterly();
+            break;
+          case 'Annually':
+            $scope.slgdAsAnnual();
+            break;
+        }
+      };
     }]);
