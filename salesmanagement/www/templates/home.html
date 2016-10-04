@@ -83,7 +83,7 @@
         </ul>
 
         <!--Vùng / Sản lượng trưởng vùng / giám đốc-->
-        <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv', 'slgd'])">
+        <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv'])">
           <span class="input-label">Vùng</span>
           <select name="area" id="area" ng-model="report.area" ng-options="area as area.name for area in areas track by area.value">
             <option value="">--Tất cả--</option>
