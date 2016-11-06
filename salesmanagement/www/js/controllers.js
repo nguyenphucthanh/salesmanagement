@@ -300,7 +300,7 @@ angular
         $ionicLoading.show();
         var _username = username ? username : $scope.loginData.username;
         var _password = password ? password : $scope.loginData.password;
-        var _imei = imei ? imei : $scope.loginData.username;
+        var _imei = imei ? imei : (window.device && window.device.uuid ? window.device.uuid : 'browser');
 
         ReportService.login(_username, _password, _imei)
           .then(function (data) {
