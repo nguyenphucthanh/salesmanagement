@@ -3,5 +3,7 @@
 
 node_modules/
 plugins/
-platforms/
+platforms/android/
+platforms/ios/
 .idea/
+platforms/
