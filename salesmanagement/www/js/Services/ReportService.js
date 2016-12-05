@@ -4,6 +4,8 @@
 angular.module('starter')
   .service('ReportService', ['CONFIG', '$q', '$http', '$localStorage', '$timeout', function (CONFIG, $q, $http, $localStorage, $timeout) {
     var report = {};
+    // var server = CONFIG.server;
+    var server = function() { return 'http://' + $localStorage.serverIpAddress + '/Home/'; }
 
     /**
      * Login service
@@ -15,7 +17,7 @@ angular.module('starter')
     report.login = function (email, password, imei) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'Login', {
+      $http.post(server() + 'Login', {
         "Email": email,
         "Password": password,
         "Imei": imei
@@ -42,7 +44,7 @@ angular.module('starter')
     report.getCustomer = function () {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetCustomerList')
+      $http.post(server() + 'GetCustomerList')
         .then(function (res) {
           angular.forEach(res.data.Result, function(cust) {
             cust.cust_vname = cust.cust_no + ' - ' + cust.cust_vname;
@@ -62,7 +64,7 @@ angular.module('starter')
     report.getChief = function () {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetChiefList')
+      $http.post(server() + 'GetChiefList')
         .then(function (res) {
           angular.forEach(res.data.Result, function(chief) {
             chief.sale_ename = chief.sale_no + ' - ' + chief.sale_ename;
@@ -82,7 +84,7 @@ angular.module('starter')
     report.getSaleman = function () {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetSalemanList')
+      $http.post(server() + 'GetSalemanList')
         .then(function (res) {
           angular.forEach(res.data.Result, function(saleman) {
             saleman.sale_ename = saleman.sale_no + ' - ' + saleman.sale_ename;
@@ -104,7 +106,7 @@ angular.module('starter')
     report.getReportCustomer = function (data) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetCustomerReport', data)
+      $http.post(server() + 'GetCustomerReport', data)
         .then(function (res) {
           deferred.resolve(res.data);
         }, function (error) {
@@ -122,7 +124,7 @@ angular.module('starter')
     report.getSaleManReport = function (data) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetSaleManReport', data)
+      $http.post(server() + 'GetSaleManReport', data)
         .then(function (res) {
           deferred.resolve(res.data);
         }, function (error) {
@@ -140,7 +142,7 @@ angular.module('starter')
     report.getChiefReport = function (data) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetChiefReport', data)
+      $http.post(server() + 'GetChiefReport', data)
         .then(function (res) {
           deferred.resolve(res.data);
         }, function (error) {
@@ -153,7 +155,7 @@ angular.module('starter')
     report.getDirectorReport = function (data) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetDirectorReport', data)
+      $http.post(server() + 'GetDirectorReport', data)
         .then(function (res) {
           deferred.resolve(res.data);
         }, function (error) {
@@ -171,7 +173,7 @@ angular.module('starter')
     report.getLabelFlags = function (data) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetLabelFlags', data)
+      $http.post(server() + 'GetLabelFlags', data)
         .then(function (res) {
           deferred.resolve(res.data);
         }, function (error) {
@@ -184,7 +186,7 @@ angular.module('starter')
     report.getP1 = function () {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetP1List')
+      $http.post(server() + 'GetP1List')
         .then(function (res) {
           var p1s = [];
           angular.forEach(res.data.Result, function (value, key) {
@@ -204,7 +206,7 @@ angular.module('starter')
     report.getP2 = function (p1) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetP2List', {p1: p1})
+      $http.post(server() + 'GetP2List', {p1: p1})
         .then(function (res) {
           angular.forEach(res.data.Result, function(p2) {
             p2.p2_name = p2.p2 + ' - ' + p2.p2_name;
@@ -220,7 +222,7 @@ angular.module('starter')
     report.getProduct = function (p2) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'GetProductList', {p2: p2})
+      $http.post(server() + 'GetProductList', {p2: p2})
         .then(function (res) {
           angular.forEach(res.data.Result, function(prod) {
             prod.product_vname = prod.product_no + ' - ' + prod.product_vname;
@@ -236,7 +238,7 @@ angular.module('starter')
     report.changePassword = function (password, newPassword) {
       var deferred = $q.defer();
 
-      $http.post(CONFIG.server + 'ChangePassword', {OldPassword: password, NewPassword: newPassword})
+      $http.post(server() + 'ChangePassword', {OldPassword: password, NewPassword: newPassword})
         .then(function (res) {
           deferred.resolve(res.data);
         }, function (error) {

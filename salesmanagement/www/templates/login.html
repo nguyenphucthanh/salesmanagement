@@ -19,6 +19,13 @@
             <div ng-message="required" class="assertive">Xin vui lòng nhập Password</div>
           </div>
         </label>
+        <label class="item item-input item-stacked-label">
+          <span class="input-label">Địa chỉ IP</span>
+          <input type="text" name="ip" ng-model="loginData.ip" placeholder="xxx.xxx.xxx.xxx" required>
+          <div ng-messages="formLogin.ip.$error" ng-show="formLogin.$submitted">
+            <div ng-message="required" class="assertive">Xin vui lòng nhập Địa chỉ IP</div>
+          </div>
+        </label>
         <label class="item">
           <button class="button button-block button-positive" type="submit">Đăng nhập</button>
         </label>

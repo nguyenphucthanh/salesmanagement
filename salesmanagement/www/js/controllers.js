@@ -12,7 +12,8 @@ angular
     'PopupService',
     '$filter',
     '$state',
-    function ($scope, $ionicModal, $localStorage, $ionicPopup, ReportService, $timeout, $ionicLoading, $cookies, PopupService, $filter, $state) {
+    '$localStorage',
+    function ($scope, $ionicModal, $localStorage, $ionicPopup, ReportService, $timeout, $ionicLoading, $cookies, PopupService, $filter, $state, $localStorage) {
       /**
        * init views
        */
@@ -298,9 +299,12 @@ angular
         }
 
         $ionicLoading.show();
+        var _ip = $scope.loginData.ip;
         var _username = username ? username : $scope.loginData.username;
         var _password = password ? password : $scope.loginData.password;
         var _imei = imei ? imei : (window.device && window.device.uuid ? window.device.uuid : 'browser');
+
+        $localStorage.serverIpAddress = _ip;
 
         ReportService.login(_username, _password, _imei)
           .then(function (data) {
@@ -346,6 +350,7 @@ angular
       $scope.logOut = function () {
         delete $localStorage.profile;
         delete $localStorage.loginData;
+        delete $localStorage.serverIpAddress;
         $scope.modal.show();
       };
 
