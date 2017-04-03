@@ -191,7 +191,7 @@ angular.module('starter', ['ionic', 'ngStorage', 'ngCookies', 'ngMessages', 'ngS
       })
 
       .state('slgd', {
-        url: '/slgd?cust_type&label_flag&p_1&p_2&product_no&tc_date&PeriodType',
+        url: '/slgd?cust_type&label_flag&p_1&p_2&product_no&tc_date&PeriodType&sale_no',
         templateUrl: 'templates/slgd.html',
         controller: 'ReportController'
       })

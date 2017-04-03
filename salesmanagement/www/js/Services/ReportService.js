@@ -99,6 +99,25 @@ angular.module('starter')
 
 
     /**
+     * get all directors
+     */
+    report.getDirectors = function () {
+      var deferred = $q.defer();
+
+      $http.post(server() + 'GetDirList')
+        .then(function (res) {
+          angular.forEach(res.data.Result, function(saleman) {
+            saleman.sale_ename = saleman.sale_no + ' - ' + saleman.sale_ename;
+          });
+          deferred.resolve(res.data);
+        }, function (error) {
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    };
+
+    /**
      * get Customer Report
      * @param data
      * @returns {*}

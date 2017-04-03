@@ -23,7 +23,8 @@ angular
 
         $scope.loginData = {
           username: '',
-          password: ''
+          password: '',
+          ip: $localStorage.serverIpAddress
         };
 
         /**
@@ -97,22 +98,22 @@ angular
           {
             name: 'Sản lượng KH',
             value: 'slkh',
-            roles: [1, 2, 3, 4]
+            roles: [0, 1, 2, 3, 4]
           },
           {
             name: 'Sản lượng Tiếp thị',
             value: 'sltt',
-            roles: [1, 2, 3, 4]
+            roles: [0, 1, 2, 3, 4]
           },
           {
             name: 'Sản lượng Trưởng vùng',
             value: 'sltv',
-            roles: [1, 2]
+            roles: [0, 1, 2]
           },
           {
             name: 'Sản lượng Giám đốc',
             value: 'slgd',
-            roles: [1]
+            roles: [0, 1]
           }
         ];
 
@@ -177,6 +178,18 @@ angular
         }, function () {
           PopupService.alert('Lỗi', 'Không thể lấy danh sách nhân viên!');
         }).finally(function () {
+          $ionicLoading.hide();
+        });
+      };
+
+      $scope.getListDirector = function() {
+        $ionicLoading.show();
+        ReportService.getDirectors().then(function(data) {
+          $scope.directors = data.Result;
+          $scope.report.director = data.Result[0];
+        }, function() {
+          PopupService.alert('Lỗi', 'Không thể lấy danh sách giám đốc!');
+        }).finally(function() {
           $ionicLoading.hide();
         });
       };
@@ -256,19 +269,22 @@ angular
               break;
 
             case 'sltt':
-              if ($scope.checkRole([1, 2])) {
+              if ($scope.checkRole([0, 1, 2])) {
                 $scope.getListSaleman();
               }
               break;
 
             case 'sltv':
               $scope.getLabelFlags();
-              if ($scope.checkRole([1])) {
+              if ($scope.checkRole([0, 1])) {
                 $scope.getChiefList();
               }
               break;
 
             case 'slgd':
+              if ($scope.checkRole([0])) {
+                $scope.getListDirector();
+              }
               $scope.getP1();
               break;
 
@@ -350,7 +366,6 @@ angular
       $scope.logOut = function () {
         delete $localStorage.profile;
         delete $localStorage.loginData;
-        delete $localStorage.serverIpAddress;
         $scope.modal.show();
       };
 
@@ -377,8 +392,8 @@ angular
             break;
           case 'sltt':
             $state.go('sltt', {
-              sale_no: [3, 4].indexOf($scope.profile.role) >= 0 ? $scope.profile.sale_no : $scope.report.saleman.sale_no,
-              sale_ename: [3, 4].indexOf($scope.profile.role) >= 0 ? $scope.profile.sale_ename : $scope.report.saleman.sale_ename,
+              sale_no: $scope.checkRole([3, 4]) ? $scope.profile.sale_no : $scope.report.saleman.sale_no,
+              sale_ename: $scope.checkRole([3, 4]) >= 0 ? $scope.profile.sale_ename : $scope.report.saleman.sale_ename,
               part_kind: $scope.report.partKind ? $scope.report.partKind.value : '',
               tc_date1: $filter('date')($scope.report.from, 'yyyy-MM-dd'),
               tc_date2: $filter('date')($scope.report.to, 'yyyy-MM-dd')
@@ -386,22 +401,23 @@ angular
             break;
           case 'sltv':
             $state.go('sltv', {
-              chief_no: $scope.checkRole([1]) ? $scope.report.chief.sale_no : $scope.profile.sale_no,
-              chief_ename: $scope.checkRole([1]) ? $scope.report.chief.sale_ename : $scope.profile.sale_ename,
-              cust_type: $scope.checkRole([1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
+              chief_no: $scope.checkRole([0, 1]) ? $scope.report.chief.sale_no : $scope.profile.sale_no,
+              chief_ename: $scope.checkRole([0, 1]) ? $scope.report.chief.sale_ename : $scope.profile.sale_ename,
+              cust_type: $scope.checkRole([0, 1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
               label_flag: $scope.report.flag ? $scope.report.flag.value : '',
               tc_date: $filter('date')($scope.report.inYear, 'yyyy-MM-dd')
             });
             break;
           case 'slgd':
             $state.go('slgd', {
-              cust_type: $scope.checkRole([1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
+              cust_type: $scope.checkRole([0, 1]) ? ($scope.report.area ? $scope.report.area.value : null) : $scope.profile.sale_no,
               label_flag: $scope.report.flag ? $scope.report.flag.value : '',
               p_1: $scope.report.p1 ? $scope.report.p1.p1 : '',
               p_2: $scope.report.p2 ? $scope.report.p2.p2 : '',
               product_no: $scope.report.product ? $scope.report.product.product_no : '',
               PeriodType: $scope.report.period.value,
-              tc_date: $filter('date')($scope.report.directorDate, 'yyyy-MM-dd')
+              tc_date: $filter('date')($scope.report.directorDate, 'yyyy-MM-dd'),
+              sale_no: $scope.checkRole([0]) ? $scope.report.director.sale_no : null
             });
             break;
           default:

@@ -36,7 +36,7 @@
         </ul>
 
         <!--Nhân viên / Sản lượng tiếp thị-->
-        <label class="item item-input item-select" ng-if="isFieldAvailable('sltt') && checkRole([1,2])">
+        <label class="item item-input item-select" ng-if="isFieldAvailable('sltt') && checkRole([0,1,2])">
           <span class="input-label">
             Nhân viên
           </span>
@@ -44,7 +44,7 @@
             <!--<option value="">&#45;&#45;Chọn nhân viên&#45;&#45;</option>-->
           </select>
         </label>
-        <ul ng-messages="formReport.salemans.$error" ng-if="isFieldAvailable('sltt') && checkRole([1,2])" class="item">
+        <ul ng-messages="formReport.salemans.$error" ng-if="isFieldAvailable('sltt') && checkRole([0,1,2])" class="item">
           <li ng-message="required" class="assertive">Xin vui lòng chọn nhân viên</li>
         </ul>
 
@@ -83,7 +83,7 @@
         </ul>
 
         <!--Vùng / Sản lượng trưởng vùng / giám đốc-->
-        <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv'])">
+        <label class="item item-input item-select" ng-if="checkRole([0, 1]) && isFieldAvailable(['sltv'])">
           <span class="input-label">Vùng</span>
           <select name="area" id="area" ng-model="report.area" ng-options="area as area.name for area in areas track by area.value">
             <option value="">--Tất cả--</option>
@@ -91,13 +91,13 @@
         </label>
 
         <!--Chọn trưởng vùng / Sản lượng trưởng vùng-->
-        <label class="item item-input item-select" ng-if="checkRole([1]) && isFieldAvailable(['sltv'])">
+        <label class="item item-input item-select" ng-if="checkRole([0, 1]) && isFieldAvailable(['sltv'])">
           <span class="input-label">Trưởng vùng</span>
           <select name="chief" id="chief" ng-model="report.chief" ng-options="chief as chief.sale_ename for chief in chiefs track by chief.sale_no" required>
             <!--<option value="">&#45;&#45;Chọn trưởng vùng&#45;&#45;</option>-->
           </select>
         </label>
-        <ul ng-messages="formReport.chief.$error" ng-if="checkRole([1]) && isFieldAvailable(['sltv'])" class="item">
+        <ul ng-messages="formReport.chief.$error" ng-if="checkRole([0, 1]) && isFieldAvailable(['sltv'])" class="item">
           <li ng-message="required" class="assertive">Xin vui lòng chọn trưởng vùng</li>
         </ul>
 
@@ -131,6 +131,19 @@
         </label>
         <ul ng-messages="formReport.period.$error" ng-if="isFieldAvailable(['slgd'])" class="item">
           <li ng-message="required" class="assertive">Xin vui lòng chọn chu kỳ</li>
+        </ul>
+
+        <!--Giám đốc / Sản lượng giám đốc / Only available for Tổng Giám Đốc-->
+        <label class="item item-input item-select" ng-if="isFieldAvailable('slgd') && checkRole([0])">
+          <span class="input-label">
+            Giám đốc
+          </span>
+          <select name="directors" ng-model="report.director" ng-options="dir as dir.sale_ename for dir in directors track by dir.sale_no" required>
+            <!--<option value="">&#45;&#45;Chọn nhân viên&#45;&#45;</option>-->
+          </select>
+        </label>
+        <ul ng-messages="formReport.directors.$error" ng-if="isFieldAvailable('slgd') && checkRole([0])" class="item">
+          <li ng-message="required" class="assertive">Xin vui lòng chọn nhân viên</li>
         </ul>
 
         <!--P1 / sản lượng giám đốc-->
